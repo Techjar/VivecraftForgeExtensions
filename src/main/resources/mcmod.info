@@ -1,0 +1,16 @@
+[
+{
+  "modid": "MineViveForge",
+  "name": "MineViveForge",
+  "description": "yes",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Techjar"],
+  "credits": "sgbhjhksdf gkjdfxgbkjmhcfgnh bjkfg v",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

@@ -1,7 +1,5 @@
 package com.techjar.minevive;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.Iterator;
 
 import org.objectweb.asm.ClassReader;
@@ -27,10 +25,10 @@ public class ClassTransformer implements IClassTransformer {
 		//System.out.println("[MineViveForgeCore] " + arg0);
 		if (arg0.equals("nh")) {
 			System.out.println("[MineViveForgeCore] Found NetHandlerPlayServer: " + arg0);
-			return patchClassASM(arg0, arg2, true);
+			return patchNetClassASM(arg0, arg2, true);
 		} else if (arg0.equals("net.minecraft.network.NetHandlerPlayServer")) {
 			System.out.println("[MineViveForgeCore] Found NetHandlerPlayServer: " + arg0);
-			return patchClassASM(arg0, arg2, false);
+			return patchNetClassASM(arg0, arg2, false);
 		} else if (arg0.equals("cpw.mods.fml.common.network.NetworkRegistry")) {
 			System.out.println("[MineViveForgeCore] Found NetworkRegistry: " + arg0);
 			return patchForgeClassASM(arg0, arg2);
@@ -38,7 +36,7 @@ public class ClassTransformer implements IClassTransformer {
 		return arg2;
 	}
 	
-	public byte[] patchClassASM(String name, byte[] bytes, boolean obfuscated) {
+	public byte[] patchNetClassASM(String name, byte[] bytes, boolean obfuscated) {
 		String methodName = null;
 		String methodDesc = null;
 		if (obfuscated) {
@@ -76,11 +74,6 @@ public class ClassTransformer implements IClassTransformer {
 		// ASM specific for cleaning up and returning the final bytes for JVM processing.
 		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 		classNode.accept(writer);
-		/*try {
-			FileOutputStream out = new FileOutputStream(new File("GameData.class"));
-			out.write(writer.toByteArray());
-			out.flush(); out.close();
-		} catch (Exception ex) {}*/
 		return writer.toByteArray();
 	}
 	
@@ -121,11 +114,6 @@ public class ClassTransformer implements IClassTransformer {
 		// ASM specific for cleaning up and returning the final bytes for JVM processing.
 		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
 		classNode.accept(writer);
-		/*try {
-			FileOutputStream out = new FileOutputStream(new File("GameData.class"));
-			out.write(writer.toByteArray());
-			out.flush(); out.close();
-		} catch (Exception ex) {}*/
 		return writer.toByteArray();
 	}
 }

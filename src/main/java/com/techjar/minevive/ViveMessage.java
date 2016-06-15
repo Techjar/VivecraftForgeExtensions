@@ -10,7 +10,7 @@ public class ViveMessage implements IMessage {
 	public static class Handle implements IMessageHandler<ViveMessage, IMessage> {
 		@Override
 		public IMessage onMessage(ViveMessage message, MessageContext ctx) {
-			MineViveForge.network2.sendTo(new ViveMessage("Teleport to your heart's content!"), ctx.getServerHandler().playerEntity);
+			MineViveForge.networkOK.sendTo(new ViveMessage("Teleport to your heart's content!"), ctx.getServerHandler().playerEntity);
 			return null;
 		}
 	}
@@ -30,7 +30,7 @@ public class ViveMessage implements IMessage {
 	public void fromBytes(ByteBuf buf) {
         // Convert the ByteBuf object to a String object
 		//System.out.println("From Bytes");
-		//str = ByteBufUtils.readUTF8String(buf);
+		//str = ByteBufUtils.readUTF8String(buf); // wtf throws exception? whatever we don't care about the payload right now
 	}
 
     // Just returns the message stored in the GenericMessage object

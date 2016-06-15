@@ -1,5 +1,6 @@
 package com.techjar.minevive;
 
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -15,8 +16,10 @@ public class MineViveForge {
 	@Instance("MineViveForge")
 	public static MineViveForge instance;
 
-	public static SimpleNetworkWrapper network;
-	public static SimpleNetworkWrapper network2;
+	public static SimpleNetworkWrapper networkVersion;
+	public static SimpleNetworkWrapper networkFreeMove;
+	public static SimpleNetworkWrapper networkLegacy;
+	public static SimpleNetworkWrapper networkOK;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -25,9 +28,12 @@ public class MineViveForge {
 
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		network = NetworkRegistry.INSTANCE.newSimpleChannel("MC|Vive|Version");
-		network2 = NetworkRegistry.INSTANCE.newSimpleChannel("MC|Vive|OK");
-		network.registerMessage(ViveMessage.Handle.class, ViveMessage.class, 112, Side.SERVER);
+		networkVersion = NetworkRegistry.INSTANCE.newSimpleChannel("MC|Vive|Version");
+		networkFreeMove = NetworkRegistry.INSTANCE.newSimpleChannel("MC|Vive|FreeMove"); // currently not used
+		networkLegacy = NetworkRegistry.INSTANCE.newSimpleChannel("MC|Vive");
+		networkOK = NetworkRegistry.INSTANCE.newSimpleChannel("MC|ViveOK");
+		networkVersion.registerMessage(ViveMessage.Handle.class, ViveMessage.class, 112, Side.SERVER);
+		networkLegacy.registerMessage(ViveMessage.Handle.class, ViveMessage.class, 112, Side.SERVER);
 	}
 
 	@EventHandler

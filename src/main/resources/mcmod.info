@@ -2,13 +2,13 @@
 {
   "modid": "MineViveForge",
   "name": "MineViveForge",
-  "description": "yes",
+  "description": "Server-side Vivecraft compatiblity mod for pure Forge servers.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
   "authorList": ["Techjar"],
-  "credits": "sgbhjhksdf gkjdfxgbkjmhcfgnh bjkfg v",
+  "credits": "what",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

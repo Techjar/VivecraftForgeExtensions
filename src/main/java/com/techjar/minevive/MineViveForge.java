@@ -11,7 +11,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(modid = "MineViveForge", name = "MineViveForge", version = "1.0", acceptableRemoteVersions = "*")
+@Mod(modid = "MineViveForge", name = "MineViveForge", version = "@VERSION@", acceptableRemoteVersions = "*")
 public class MineViveForge {
 	@Instance("MineViveForge")
 	public static MineViveForge instance;

@@ -24,7 +24,7 @@ public class MineViveForgeCore extends DummyModContainer {
 		ModMetadata meta = getMetadata();
 		meta.modId = "MineViveForgeCore";
 		meta.name = "MineViveForgeCore";
-		meta.version = "1.0"; //String.format("%d.%d.%d.%d", majorVersion, minorVersion, revisionVersion, buildVersion);
+		meta.version = "@VERSION@"; //String.format("%d.%d.%d.%d", majorVersion, minorVersion, revisionVersion, buildVersion);
 		meta.credits = "blah";
 		meta.authorList = Arrays.asList("Techjar");
 		meta.description = "";

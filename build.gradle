@@ -23,8 +23,17 @@ archivesBaseName = "MineViveForge"
 
 minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
-    assetDir = "eclipse/assets"
-    //mappings = "snapshot_20140918"
+    runDir = "run"
+
+    replace "@RAW_VERSION@", project.version
+
+	project.version += "."+System.getenv().BUILD_NUMBER
+
+    replace "@VERSION@", project.version
+    replaceIn "MineViveForge.java"
+    replaceIn "MineViveForgeCore.java"
+
+    project.version = project.minecraft.version + "-" + project.version
 }
 
 jar {

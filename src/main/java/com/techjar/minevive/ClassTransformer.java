@@ -36,6 +36,7 @@ public class ClassTransformer implements IClassTransformer {
 		return arg2;
 	}
 	
+	// Patch to allow Vive teleporting without getting "rubber-banding"
 	public byte[] patchNetClassASM(String name, byte[] bytes, boolean obfuscated) {
 		String methodName = null;
 		String methodDesc = null;
@@ -77,6 +78,7 @@ public class ClassTransformer implements IClassTransformer {
 		return writer.toByteArray();
 	}
 	
+	// Patch to allow registering network channels with "MC|" prefix, because Forge
 	public byte[] patchForgeClassASM(String name, byte[] bytes) {
 		String methodName = "newChannel";
 		String methodDesc = "(Ljava/lang/String;[Lio/netty/channel/ChannelHandler;)Ljava/util/EnumMap;";

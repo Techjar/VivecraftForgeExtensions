@@ -32,7 +32,7 @@ public class MineViveForge {
 		networkFreeMove = NetworkRegistry.INSTANCE.newSimpleChannel("MC|Vive|FreeMove"); // currently not used
 		networkLegacy = NetworkRegistry.INSTANCE.newSimpleChannel("MC|Vive");
 		networkOK = NetworkRegistry.INSTANCE.newSimpleChannel("MC|ViveOK");
-		networkVersion.registerMessage(ViveMessage.Handle.class, ViveMessage.class, 112, Side.SERVER);
+		networkVersion.registerMessage(ViveMessage.Handle.class, ViveMessage.class, 86, Side.SERVER);
 		networkLegacy.registerMessage(ViveMessage.Handle.class, ViveMessage.class, 112, Side.SERVER);
 	}
 

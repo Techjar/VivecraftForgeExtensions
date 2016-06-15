@@ -17,7 +17,7 @@ public class MineViveForge {
 	public static MineViveForge instance;
 
 	public static SimpleNetworkWrapper networkVersion;
-	public static SimpleNetworkWrapper networkFreeMove;
+	//public static SimpleNetworkWrapper networkFreeMove; // currently not used
 	public static SimpleNetworkWrapper networkLegacy;
 	public static SimpleNetworkWrapper networkOK;
 
@@ -29,7 +29,7 @@ public class MineViveForge {
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		networkVersion = NetworkRegistry.INSTANCE.newSimpleChannel("MC|Vive|Version");
-		networkFreeMove = NetworkRegistry.INSTANCE.newSimpleChannel("MC|Vive|FreeMove"); // currently not used
+		//networkFreeMove = NetworkRegistry.INSTANCE.newSimpleChannel("MC|Vive|FreeMove"); // currently not used
 		networkLegacy = NetworkRegistry.INSTANCE.newSimpleChannel("MC|Vive");
 		networkOK = NetworkRegistry.INSTANCE.newSimpleChannel("MC|ViveOK");
 		networkVersion.registerMessage(ViveMessage.Handle.class, ViveMessage.class, 86, Side.SERVER);

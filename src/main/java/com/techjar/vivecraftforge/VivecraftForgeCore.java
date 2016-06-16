@@ -22,7 +22,7 @@ public class VivecraftForgeCore extends DummyModContainer {
 	public VivecraftForgeCore() {
 		super(new ModMetadata());
 		ModMetadata meta = getMetadata();
-		meta.modId = "VivecraftForge";
+		meta.modId = "VivecraftForgeCore";
 		meta.name = "Vivecraft Forge Extensions Core";
 		meta.version = "@VERSION@"; //String.format("%d.%d.%d.%d", majorVersion, minorVersion, revisionVersion, buildVersion);
 		meta.credits = "blah";

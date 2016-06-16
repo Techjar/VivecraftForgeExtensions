@@ -1,8 +1,8 @@
 [
 {
-  "modid": "MineViveForge",
-  "name": "MineViveForge",
-  "description": "Server-side Vivecraft compatiblity mod for pure Forge servers.",
+  "modid": "VivecraftForge",
+  "name": "Vivecraft Forge Extensions",
+  "description": "Forge companion mod for Vivecraft which adds syncing of HMD and controller info, enabling you to see others' controllers.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",

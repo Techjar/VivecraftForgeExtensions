@@ -18,8 +18,8 @@ buildscript {
 apply plugin: 'forge'
 
 version = "0.1.0"
-group= "com.techjar.minevive" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "MineViveForge"
+group= "com.techjar.vivecraftforge" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "VivecraftForgeExtensions"
 
 minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
@@ -30,15 +30,15 @@ minecraft {
 	project.version += "."+System.getenv().BUILD_NUMBER
 
     replace "@VERSION@", project.version
-    replaceIn "MineViveForge.java"
-    replaceIn "MineViveForgeCore.java"
+    replaceIn "VivecraftForge.java"
+    replaceIn "VivecraftForge.java"
 
     project.version = project.minecraft.version + "-" + project.version
 }
 
 jar {
     manifest {
-        attributes (FMLCorePlugin: "com.techjar.minevive.FMLLoader", FMLCorePluginContainsFMLMod: true)
+        attributes (FMLCorePlugin: "com.techjar.vivecraftforge.FMLPlugin", FMLCorePluginContainsFMLMod: true)
     }
 }
 

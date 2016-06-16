@@ -1,4 +1,4 @@
-package com.techjar.minevive;
+package com.techjar.vivecraftforge;
 
 import java.util.Arrays;
 
@@ -18,12 +18,12 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 
-public class MineViveForgeCore extends DummyModContainer {
-	public MineViveForgeCore() {
+public class VivecraftForgeCore extends DummyModContainer {
+	public VivecraftForgeCore() {
 		super(new ModMetadata());
 		ModMetadata meta = getMetadata();
-		meta.modId = "MineViveForgeCore";
-		meta.name = "MineViveForgeCore";
+		meta.modId = "VivecraftForge";
+		meta.name = "Vivecraft Forge Extensions Core";
 		meta.version = "@VERSION@"; //String.format("%d.%d.%d.%d", majorVersion, minorVersion, revisionVersion, buildVersion);
 		meta.credits = "blah";
 		meta.authorList = Arrays.asList("Techjar");

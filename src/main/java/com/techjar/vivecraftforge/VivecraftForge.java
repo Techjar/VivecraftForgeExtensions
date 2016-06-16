@@ -1,4 +1,6 @@
-package com.techjar.minevive;
+package com.techjar.vivecraftforge;
+
+import com.techjar.vivecraftforge.network.ViveMessage;
 
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import cpw.mods.fml.common.Mod;
@@ -11,10 +13,10 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(modid = "MineViveForge", name = "MineViveForge", version = "@VERSION@", acceptableRemoteVersions = "*")
-public class MineViveForge {
-	@Instance("MineViveForge")
-	public static MineViveForge instance;
+@Mod(modid = "VivecraftForge", name = "Vivecraft Forge Extensions", version = "@VERSION@", acceptableRemoteVersions = "@RAW_VERSION@.*")
+public class VivecraftForge {
+	@Instance("VivecraftForge")
+	public static VivecraftForge instance;
 
 	public static SimpleNetworkWrapper networkVersion;
 	//public static SimpleNetworkWrapper networkFreeMove; // currently not used

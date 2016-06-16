@@ -1,4 +1,6 @@
-package com.techjar.minevive;
+package com.techjar.vivecraftforge.network;
+
+import com.techjar.vivecraftforge.VivecraftForge;
 
 import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -10,7 +12,7 @@ public class ViveMessage implements IMessage {
 	public static class Handle implements IMessageHandler<ViveMessage, IMessage> {
 		@Override
 		public IMessage onMessage(ViveMessage message, MessageContext ctx) {
-			MineViveForge.networkOK.sendTo(new ViveMessage("Teleport to your heart's content!"), ctx.getServerHandler().playerEntity);
+			VivecraftForge.networkOK.sendTo(new ViveMessage("Teleport to your heart's content!"), ctx.getServerHandler().playerEntity);
 			return null;
 		}
 	}

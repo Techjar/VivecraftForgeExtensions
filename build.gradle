@@ -31,7 +31,7 @@ minecraft {
 
     replace "@VERSION@", project.version
     replaceIn "VivecraftForge.java"
-    replaceIn "VivecraftForge.java"
+    replaceIn "VivecraftForgeCore.java"
 
     project.version = project.minecraft.version + "-" + project.version
 }

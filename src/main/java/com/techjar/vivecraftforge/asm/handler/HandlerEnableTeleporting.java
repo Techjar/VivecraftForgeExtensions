@@ -48,18 +48,17 @@ public class HandlerEnableTeleporting extends ASMClassHandler {
 		}
 
 		@Override
-		public MethodNode patchMethod(ClassNode classNode, MethodNode methodNode, boolean obfuscated) {
+		public void patchMethod(MethodNode methodNode, ClassNode classNode, boolean obfuscated) {
 			for (int i = 0; i < methodNode.instructions.size(); i++) {
 				AbstractInsnNode insn = methodNode.instructions.get(i);
 				if (insn instanceof LdcInsnNode) {
 					LdcInsnNode insn2 = (LdcInsnNode)insn;
 					if (insn2.cst.getClass() == Double.class && (insn2.cst.equals(new Double("100.0")) || insn2.cst.equals(new Double("0.0625")))) {
-						VivecraftForgeLog.info("Changing double constant " + insn2.cst + " to 10000");
+						VivecraftForgeLog.debug("Changing double constant " + insn2.cst + " to 10000");
 						insn2.cst = new Double("10000.0");
 					}
 				}
 			}
-			return methodNode;
 		}
 	}
 }

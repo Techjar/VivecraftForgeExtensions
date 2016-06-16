@@ -20,11 +20,11 @@ public class ClassTransformer implements IClassTransformer {
 		for (ASMClassHandler handler : asmHandlers) {
 			ClassTuple tuple = handler.getDesiredClass();
 			if (name.equals(tuple.classNameObf)) {
-				VivecraftForgeLog.info("Patching class: " + name + " (" + tuple.className + ")");
-				return handler.patchClass(bytes, true);
+				VivecraftForgeLog.debug("Patching class: " + name + " (" + tuple.className + ")");
+				bytes = handler.patchClass(bytes, true);
 			} else if (name.equals(tuple.className)) {
-				VivecraftForgeLog.info("Patching class: " + name);
-				return handler.patchClass(bytes, false);
+				VivecraftForgeLog.debug("Patching class: " + name);
+				bytes = handler.patchClass(bytes, false);
 			}
 		}
 		return bytes;

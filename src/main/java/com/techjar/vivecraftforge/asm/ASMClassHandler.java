@@ -26,13 +26,13 @@ public abstract class ASMClassHandler {
 			for (ASMMethodHandler handler : handlers) {
 				MethodTuple tuple = handler.getDesiredMethod();
 				if ((method.name.equals(tuple.methodName) && method.desc.equals(tuple.methodDesc)) || (method.name.equals(tuple.methodNameObf) && method.desc.equals(tuple.methodDescObf))) {
-					VivecraftForgeLog.info("Patching method: " + method.name + method.desc + (obfuscated ? " (" + tuple.methodName + tuple.methodDesc + ")" : ""));
-					handler.patchMethod(classNode, method, obfuscated);
+					VivecraftForgeLog.debug("Patching method: " + method.name + method.desc + (obfuscated ? " (" + tuple.methodName + tuple.methodDesc + ")" : ""));
+					handler.patchMethod(method, classNode, obfuscated);
 				}
 			}
 		}
 		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | (getComputeFrames() ? ClassWriter.COMPUTE_FRAMES : 0));
 		classNode.accept(writer);
-		return bytes;
+		return writer.toByteArray();
 	}
 }

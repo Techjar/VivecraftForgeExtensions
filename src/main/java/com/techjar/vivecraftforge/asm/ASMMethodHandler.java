@@ -5,5 +5,5 @@ import org.objectweb.asm.tree.MethodNode;
 
 public interface ASMMethodHandler {
 	public MethodTuple getDesiredMethod();
-	public MethodNode patchMethod(ClassNode classNode, MethodNode methodNode, boolean obfuscated);
+	public void patchMethod(MethodNode methodNode, ClassNode classNode, boolean obfuscated);
 }

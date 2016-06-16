@@ -34,24 +34,23 @@ public class HandlerHackForgeChannelName extends ASMClassHandler {
 		}
 
 		@Override
-		public MethodNode patchMethod(ClassNode classNode, MethodNode methodNode, boolean obfuscated) {
+		public void patchMethod(MethodNode methodNode, ClassNode classNode, boolean obfuscated) {
 			for (int i = 0; i < methodNode.instructions.size(); i++) {
 				AbstractInsnNode insn = methodNode.instructions.get(i);
 				if (insn instanceof LdcInsnNode) {
 					LdcInsnNode insn2 = (LdcInsnNode)insn;
 					if (insn2.cst.getClass() == String.class && insn2.cst.equals("MC|")) {
 						int found = i - 1;
-						VivecraftForgeLog.info("Found desired instruction node: " + insn2);
+						VivecraftForgeLog.debug("Found desired instruction node: " + insn2.getClass().getSimpleName() + " " + insn2.cst);
 						for (int j = 0; j < 4; j++) {
 							AbstractInsnNode insn3 = methodNode.instructions.get(found);
 							methodNode.instructions.remove(insn3);
-							VivecraftForgeLog.info("Removed instruction: " + insn3);
+							VivecraftForgeLog.debug("Removed instruction: " + insn3.getClass().getSimpleName());
 						}
 						break;
 					}
 				}
 			}
-			return methodNode;
 		}
 	}
 }

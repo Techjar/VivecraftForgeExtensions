@@ -13,7 +13,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(modid = "VivecraftForge", name = "Vivecraft Forge Extensions", version = "@VERSION@", acceptableRemoteVersions = "@RAW_VERSION@.*")
+@Mod(modid = "VivecraftForge", name = "Vivecraft Forge Extensions", version = "@VERSION@", acceptableRemoteVersions = "*")
 public class VivecraftForge {
 	@Instance("VivecraftForge")
 	public static VivecraftForge instance;

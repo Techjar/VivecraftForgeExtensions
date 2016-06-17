@@ -11,7 +11,7 @@ import com.techjar.vivecraftforge.asm.ClassTuple;
 import com.techjar.vivecraftforge.asm.MethodTuple;
 import com.techjar.vivecraftforge.util.VivecraftForgeLog;
 
-public class HandlerHackForgeChannelName extends ASMClassHandler {
+public class ASMHandlerHackForgeChannelName extends ASMClassHandler {
 	@Override
 	public ClassTuple getDesiredClass() {
 		return new ClassTuple("cpw.mods.fml.common.network.NetworkRegistry");

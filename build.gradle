@@ -38,7 +38,7 @@ minecraft {
 
 jar {
     manifest {
-        attributes (FMLCorePlugin: "com.techjar.vivecraftforge.FMLPlugin", FMLCorePluginContainsFMLMod: true)
+        attributes (FMLCorePlugin: "com.techjar.vivecraftforge.FMLPlugin", FMLCorePluginContainsFMLMod: true, FMLAT: "vfe_at.cfg")
     }
 }
 
@@ -56,6 +56,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
+    compile "org.projectlombok:lombok:1.16.8"
 }
 
 processResources

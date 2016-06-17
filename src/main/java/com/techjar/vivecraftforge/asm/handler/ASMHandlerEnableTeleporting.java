@@ -11,7 +11,7 @@ import com.techjar.vivecraftforge.asm.ClassTuple;
 import com.techjar.vivecraftforge.asm.MethodTuple;
 import com.techjar.vivecraftforge.util.VivecraftForgeLog;
 
-public class HandlerEnableTeleporting extends ASMClassHandler {
+public class ASMHandlerEnableTeleporting extends ASMClassHandler {
 	@Override
 	public ClassTuple getDesiredClass() {
 		return new ClassTuple("net.minecraft.network.NetHandlerPlayServer", "nh");

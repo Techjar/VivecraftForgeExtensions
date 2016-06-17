@@ -11,8 +11,9 @@ import net.minecraft.launchwrapper.IClassTransformer;
 public class ClassTransformer implements IClassTransformer {
 	private static final List<ASMClassHandler> asmHandlers = new ArrayList<ASMClassHandler>();
 	static {
-		asmHandlers.add(new HandlerEnableTeleporting());
-		asmHandlers.add(new HandlerHackForgeChannelName());
+		asmHandlers.add(new ASMHandlerEnableTeleporting());
+		asmHandlers.add(new ASMHandlerHackForgeChannelName());
+		asmHandlers.add(new ASMHandlerPlayerScaling());
 	}
 	
 	@Override

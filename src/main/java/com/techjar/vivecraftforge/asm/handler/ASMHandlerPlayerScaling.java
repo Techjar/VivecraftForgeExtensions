@@ -1,21 +1,23 @@
 package com.techjar.vivecraftforge.asm.handler;
 
-import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-
 import org.lwjgl.opengl.GL11;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.JumpInsnNode;
+import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.VarInsnNode;
 
 import com.techjar.vivecraftforge.asm.ASMClassHandler;
 import com.techjar.vivecraftforge.asm.ASMMethodHandler;
 import com.techjar.vivecraftforge.asm.ClassTuple;
 import com.techjar.vivecraftforge.asm.MethodTuple;
+import com.techjar.vivecraftforge.util.ASMDelegator;
+import com.techjar.vivecraftforge.util.Util;
 import com.techjar.vivecraftforge.util.VivecraftForgeLog;
 
 public class ASMHandlerPlayerScaling extends ASMClassHandler {
@@ -48,11 +50,8 @@ public class ASMHandlerPlayerScaling extends ASMClassHandler {
 					MethodInsnNode insn2 = (MethodInsnNode)insn;
 					if (insn2.owner.equals("org/lwjgl/opengl/GL11") && insn2.name.equals("glScalef")) {
 						InsnList insnList = new InsnList();
-						//GL11.glScalef(0.5F, 0.5F, 0.5F);
-						insnList.add(new LdcInsnNode(new Float("0.5")));
-						insnList.add(new LdcInsnNode(new Float("0.5")));
-						insnList.add(new LdcInsnNode(new Float("0.5")));
-						insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "org/lwjgl/opengl/GL11", "glScalef", "(FFF)V", false));
+						insnList.add(new VarInsnNode(Opcodes.ALOAD, 1));
+						insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/techjar/vivecraftforge/util/ASMDelegator", "scalePlayer", "(Lnet/minecraft/entity/Entity;)V", false));
 						methodNode.instructions.insert(insn2, insnList);
 						break;
 					}

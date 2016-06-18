@@ -1,7 +1,10 @@
 package com.techjar.vivecraftforge.entity;
 
-import sun.misc.Unsafe;
+import com.techjar.vivecraftforge.util.Quaternion;
+
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,10 +13,10 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 public abstract class EntityVRObject extends Entity implements IEntityAdditionalSpawnData {
-	public Vec3 position = Vec3.createVectorHelper(0, 0, 0);
-	public Vec3 aimVector = Vec3.createVectorHelper(0, 0, 0);
-	public Vec3 positionLast = Vec3.createVectorHelper(0, 0, 0);
-	public Vec3 aimVectorLast = Vec3.createVectorHelper(0, 0, 0);
+	public Vec3 position = Vec3.createVectorHelper(123, 75, 91);
+	public Vec3 positionLast = Vec3.createVectorHelper(123, 75, 91);
+	public float rotW = 1, rotX, rotY, rotZ;
+	public float rotWLast = 1, rotXLast, rotYLast, rotZLast;
 	protected int associatedEntityId;
 	protected EntityPlayer entityPlayer;
 	
@@ -23,35 +26,45 @@ public abstract class EntityVRObject extends Entity implements IEntityAdditional
 
 	@Override
 	protected void entityInit() {
-		dataWatcher.addObject(2, 0);
-		dataWatcher.addObject(3, 0);
-		dataWatcher.addObject(4, 0);
-		dataWatcher.addObject(5, 0);
-		dataWatcher.addObject(6, 0);
-		dataWatcher.addObject(7, 0);
+		dataWatcher.addObject(2, 0F);
+		dataWatcher.addObject(3, 0F);
+		dataWatcher.addObject(4, 0F);
+		dataWatcher.addObject(5, 0F);
+		dataWatcher.addObject(6, 0F);
+		dataWatcher.addObject(7, 0F);
+		dataWatcher.addObject(8, 0F);
 	}
 	
 	@Override
 	public void onUpdate() {
 		if (!worldObj.isRemote) {
-			if (getEntityPlayer() == null || getEntityPlayer().isDead) {
+			/*if (getEntityPlayer() == null || getEntityPlayer().isDead) {
 				this.setDead();
 				return;
-			}
+			}*/
 			dataWatcher.updateObject(2, (float)position.xCoord);
 			dataWatcher.updateObject(3, (float)position.yCoord);
 			dataWatcher.updateObject(4, (float)position.zCoord);
-			dataWatcher.updateObject(5, (float)aimVector.xCoord);
-			dataWatcher.updateObject(6, (float)aimVector.yCoord);
-			dataWatcher.updateObject(7, (float)aimVector.zCoord);
+			dataWatcher.updateObject(5, (float)rotW);
+			dataWatcher.updateObject(6, (float)rotX);
+			dataWatcher.updateObject(7, (float)rotY);
+			dataWatcher.updateObject(8, (float)rotZ);
 		}
 		else {
+			positionLast.xCoord = position.xCoord;
+			positionLast.yCoord = position.yCoord;
+			positionLast.zCoord = position.zCoord;
+			rotWLast = rotW;
+			rotXLast = rotX;
+			rotYLast = rotY;
+			rotZLast = rotZ;
 			position.xCoord = dataWatcher.getWatchableObjectFloat(2);
 			position.yCoord = dataWatcher.getWatchableObjectFloat(3);
 			position.zCoord = dataWatcher.getWatchableObjectFloat(4);
-			aimVector.xCoord = dataWatcher.getWatchableObjectFloat(5);
-			aimVector.yCoord = dataWatcher.getWatchableObjectFloat(6);
-			aimVector.zCoord = dataWatcher.getWatchableObjectFloat(7);
+			rotW = dataWatcher.getWatchableObjectFloat(5);
+			rotX = dataWatcher.getWatchableObjectFloat(6);
+			rotY = dataWatcher.getWatchableObjectFloat(7);
+			rotZ = dataWatcher.getWatchableObjectFloat(8);
 		}
 	}
 
@@ -68,9 +81,10 @@ public abstract class EntityVRObject extends Entity implements IEntityAdditional
 		buf.writeFloat((float)position.xCoord);
 		buf.writeFloat((float)position.yCoord);
 		buf.writeFloat((float)position.zCoord);
-		buf.writeFloat((float)aimVector.xCoord);
-		buf.writeFloat((float)aimVector.yCoord);
-		buf.writeFloat((float)aimVector.zCoord);
+		buf.writeFloat((float)rotW);
+		buf.writeFloat((float)rotX);
+		buf.writeFloat((float)rotY);
+		buf.writeFloat((float)rotZ);
 		buf.writeInt(associatedEntityId);
 	}
 
@@ -79,9 +93,10 @@ public abstract class EntityVRObject extends Entity implements IEntityAdditional
 		position.xCoord = positionLast.xCoord = buf.readFloat();
 		position.yCoord = positionLast.yCoord = buf.readFloat();
 		position.zCoord = positionLast.zCoord = buf.readFloat();
-		aimVector.xCoord = aimVectorLast.xCoord = buf.readFloat();
-		aimVector.yCoord = aimVectorLast.yCoord = buf.readFloat();
-		aimVector.zCoord = aimVectorLast.zCoord = buf.readFloat();
+		rotW = rotWLast = buf.readFloat();
+		rotX = rotXLast = buf.readFloat();
+		rotY = rotYLast = buf.readFloat();
+		rotZ = rotZLast = buf.readFloat();
 		associatedEntityId = buf.readInt();
 	}
 	
@@ -90,5 +105,15 @@ public abstract class EntityVRObject extends Entity implements IEntityAdditional
 			entityPlayer = (EntityPlayer)worldObj.getEntityByID(associatedEntityId);
 		}
 		return entityPlayer;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public Quaternion getRotation() {
+		return new Quaternion(rotW, rotX, rotY, rotZ);
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public Quaternion getRotationLast() {
+		return new Quaternion(rotWLast, rotXLast, rotYLast, rotZLast);
 	}
 }

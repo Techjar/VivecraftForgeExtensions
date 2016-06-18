@@ -17,7 +17,7 @@ import net.minecraft.item.ItemArmor;
 public class HandlerRenderEvent {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
-	public void renderPlayer(RenderPlayerEvent.Pre event) {
+	public void onRenderPlayer(RenderPlayerEvent.Pre event) {
 		if (Util.isVRPlayer(event.entityPlayer)) {
 			ModelBiped model = event.renderer.modelBipedMain;
 			model.bipedHead.showModel = false;
@@ -29,7 +29,7 @@ public class HandlerRenderEvent {
 
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
-	public void renderPlayerSpecials(RenderPlayerEvent.Specials.Pre event) {
+	public void onRenderPlayerSpecials(RenderPlayerEvent.Specials.Pre event) {
 		if (Util.isVRPlayer(event.entityPlayer)) {
 			event.renderHelmet = false;
 			event.renderItem = false;
@@ -38,7 +38,8 @@ public class HandlerRenderEvent {
 
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
-	public void renderPlayerSetArmorModel(RenderPlayerEvent.SetArmorModel event) {
+	public void onRenderPlayerSetArmorModel(RenderPlayerEvent.SetArmorModel event) {
+		if (!Util.isVRPlayer(event.entityPlayer)) return;
 		if (event.stack != null) {
 			Item item = event.stack.getItem();
 
@@ -54,12 +55,10 @@ public class HandlerRenderEvent {
 				modelbiped.bipedRightLeg.showModel = event.slot == 1 || event.slot == 0;
 				modelbiped.bipedLeftLeg.showModel = event.slot == 1 || event.slot == 0;
 				modelbiped = net.minecraftforge.client.ForgeHooksClient.getArmorModel(event.entityPlayer, event.stack, 3 - event.slot, modelbiped);
-				if (Util.isVRPlayer(event.entityPlayer)) {
-					modelbiped.bipedHead.showModel = false;
-					modelbiped.bipedHeadwear.showModel = false;
-					modelbiped.bipedRightArm.showModel = false;
-					modelbiped.bipedLeftArm.showModel = false;
-				}
+				modelbiped.bipedHead.showModel = false;
+				modelbiped.bipedHeadwear.showModel = false;
+				modelbiped.bipedRightArm.showModel = false;
+				modelbiped.bipedLeftArm.showModel = false;
 				event.renderer.setRenderPassModel(modelbiped);
 				modelbiped.onGround = ((RenderPlayer)event.renderer).mainModel.onGround;
 				modelbiped.isRiding = ((RenderPlayer)event.renderer).mainModel.isRiding;

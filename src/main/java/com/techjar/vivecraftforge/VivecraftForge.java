@@ -20,7 +20,7 @@ public class VivecraftForge {
 	@Instance("VivecraftForge")
 	public static VivecraftForge instance;
 	
-	@SidedProxy(clientSide = "com.techjar.vivecraftforge.proxy.ProxyClient", serverSide = "com.techjar.vivecraftforge.proxy.ProxyServer")
+	@SidedProxy(clientSide = "com.techjar.vivecraftforge.proxy.ProxyClient", serverSide = "com.techjar.vivecraftforge.proxy.ProxyCommon")
 	public static ProxyCommon proxy;
 
 	public static SimpleNetworkWrapper networkVersion;
@@ -47,6 +47,8 @@ public class VivecraftForge {
 		packetPipeline = VivecraftForgeChannelHandler.init();
 		
 		proxy.registerEventHandlers();
+		proxy.registerEntities();
+		proxy.registerRenderers();
 	}
 
 	@EventHandler

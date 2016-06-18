@@ -3,6 +3,10 @@ package com.techjar.vivecraftforge.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import org.lwjgl.util.vector.Matrix4f;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
@@ -12,13 +16,14 @@ import net.minecraft.util.Vec3;
  * This class is responsible for hooking into Vivecraft code reflectively so we can get the position info
  * we need without creating a hard dependency on Vivecraft, enabling normal clients to use this mod as well.
  */
+@SideOnly(Side.CLIENT)
 public class VivecraftReflector {
 	private VivecraftReflector() {
 	}
 	
 	private static Method method_getCameraLocation;
 	private static Method method_getAimSource;
-	private static Method method_getAimVector;
+	private static Method method_getAimRotation;
 	private static Field field_lookaimController;
 	private static boolean installed;
 	static {
@@ -42,6 +47,14 @@ public class VivecraftReflector {
 		return (Vec3)method_getCameraLocation.invoke(Minecraft.getMinecraft().entityRenderer);
 	}
 	
+	@SneakyThrows(Exception.class)
+	public static Vec3 getHeadRotation() {
+		if (method_getCameraLocation == null) {
+			method_getCameraLocation = EntityRenderer.class.getDeclaredMethod("getCameraLocation");
+		}
+		return (Vec3)method_getCameraLocation.invoke(Minecraft.getMinecraft().entityRenderer);
+	}
+	
 	/**
 	 * 0 for main, 1 for off-hand
 	 */
@@ -57,11 +70,11 @@ public class VivecraftReflector {
 	 * 0 for main, 1 for off-hand
 	 */
 	@SneakyThrows(Exception.class)
-	public static Vec3 getControllerAim(int controller) {
-		if (method_getAimVector == null) {
-			method_getAimVector = Class.forName("com.mtbs3d.minecrift.api.IBodyAimController").getDeclaredMethod("getAimVector", Integer.TYPE);
+	public static Matrix4f getControllerRotation(int controller) {
+		if (method_getAimRotation == null) {
+			method_getAimRotation = Class.forName("com.mtbs3d.minecrift.api.IBodyAimController").getDeclaredMethod("getAimRotation", Integer.TYPE);
 		}
-		return (Vec3)method_getAimVector.invoke(getAimController(), controller);
+		return (Matrix4f)method_getAimRotation.invoke(getAimController(), controller);
 	}
 	
 	@SneakyThrows(Exception.class)

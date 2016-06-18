@@ -53,6 +53,7 @@ public class ASMHandlerPlayerScaling extends ASMClassHandler {
 						insnList.add(new VarInsnNode(Opcodes.ALOAD, 1));
 						insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/techjar/vivecraftforge/util/ASMDelegator", "scalePlayer", "(Lnet/minecraft/entity/Entity;)V", false));
 						methodNode.instructions.insert(insn2, insnList);
+						VivecraftForgeLog.debug("Inserted delegate method call.");
 						break;
 					}
 				}

@@ -1,5 +1,7 @@
 package com.techjar.vivecraftforge.proxy;
 
+import com.techjar.vivecraftforge.client.render.entity.RenderEntityVRHead;
+import com.techjar.vivecraftforge.entity.EntityVRHead;
 import com.techjar.vivecraftforge.handler.HandlerRenderEvent;
 
 import net.minecraft.block.Block;
@@ -34,6 +36,6 @@ public class ProxyClient extends ProxyCommon {
 	}
 
 	private void registerEntityRenderers() {
-		// Stub Method
+		RenderingRegistry.registerEntityRenderingHandler(EntityVRHead.class, new RenderEntityVRHead());
 	}
 }

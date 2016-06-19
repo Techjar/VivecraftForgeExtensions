@@ -1,11 +1,8 @@
 package com.techjar.vivecraftforge.client.render.model;
 
-import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
 
 public class ModelVRHead extends ModelBase {
 	public ModelRenderer head;
@@ -28,7 +25,7 @@ public class ModelVRHead extends ModelBase {
 	 * lol coords are not used here so don't even try
 	 */
 	@Override
-	public void render(Entity entity, float x, float y, float z, float pitch, float yaw, float whatIsThis) {
+	public void render(Entity entity, float x, float y, float z, float yaw, float pitch, float whatIsThis) {
 		head.render(whatIsThis);
 		headwear.render(whatIsThis);
 	}

@@ -1,18 +1,14 @@
 package com.techjar.vivecraftforge.proxy;
 
-import com.techjar.vivecraftforge.client.render.entity.RenderEntityVRHead;
-import com.techjar.vivecraftforge.entity.EntityVRHead;
+import com.techjar.vivecraftforge.client.render.entity.*;
+import com.techjar.vivecraftforge.entity.*;
 import com.techjar.vivecraftforge.handler.HandlerRenderEvent;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ProxyClient extends ProxyCommon {
@@ -37,5 +33,7 @@ public class ProxyClient extends ProxyCommon {
 
 	private void registerEntityRenderers() {
 		RenderingRegistry.registerEntityRenderingHandler(EntityVRHead.class, new RenderEntityVRHead());
+		RenderingRegistry.registerEntityRenderingHandler(EntityVRMainArm.class, new RenderEntityVRMainArm());
+		RenderingRegistry.registerEntityRenderingHandler(EntityVROffHandArm.class, new RenderEntityVROffHandArm());
 	}
 }

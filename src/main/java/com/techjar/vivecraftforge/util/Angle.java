@@ -1,7 +1,6 @@
 
 package com.techjar.vivecraftforge.util;
 
-import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
 
 import cpw.mods.fml.relauncher.Side;
@@ -140,6 +139,7 @@ public class Angle {
             case PITCH: return new Angle(pitch + degrees, yaw, roll);
             case YAW: return new Angle(pitch, yaw + degrees, roll);
             case ROLL: return new Angle(pitch, yaw, roll + degrees);
+			default: break;
         }
         return new Angle(this);
     }

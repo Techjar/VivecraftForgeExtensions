@@ -1,13 +1,9 @@
 package com.techjar.vivecraftforge.asm.handler;
 
-import org.lwjgl.opengl.GL11;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnList;
-import org.objectweb.asm.tree.JumpInsnNode;
-import org.objectweb.asm.tree.LabelNode;
-import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
@@ -16,8 +12,6 @@ import com.techjar.vivecraftforge.asm.ASMClassHandler;
 import com.techjar.vivecraftforge.asm.ASMMethodHandler;
 import com.techjar.vivecraftforge.asm.ClassTuple;
 import com.techjar.vivecraftforge.asm.MethodTuple;
-import com.techjar.vivecraftforge.util.ASMDelegator;
-import com.techjar.vivecraftforge.util.Util;
 import com.techjar.vivecraftforge.util.VivecraftForgeLog;
 
 public class ASMHandlerPlayerScaling extends ASMClassHandler {

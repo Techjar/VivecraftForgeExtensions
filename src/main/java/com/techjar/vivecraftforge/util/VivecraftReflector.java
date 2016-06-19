@@ -25,6 +25,7 @@ public class VivecraftReflector {
 	private static Method method_getAimSource;
 	private static Method method_getAimRotation;
 	private static Field field_lookaimController;
+	private static Field field_hmdPose;
 	private static boolean installed;
 	static {
 		try {
@@ -48,11 +49,11 @@ public class VivecraftReflector {
 	}
 	
 	@SneakyThrows(Exception.class)
-	public static Vec3 getHeadRotation() {
-		if (method_getCameraLocation == null) {
-			method_getCameraLocation = EntityRenderer.class.getDeclaredMethod("getCameraLocation");
+	public static Matrix4f getHeadRotation() {
+		if (field_hmdPose == null) {
+			field_hmdPose = Class.forName("com.mtbs3d.minecrift.provider.MCOpenVR").getDeclaredField("hmdPose");
 		}
-		return (Vec3)method_getCameraLocation.invoke(Minecraft.getMinecraft().entityRenderer);
+		return (Matrix4f)field_hmdPose.get(null);
 	}
 	
 	/**

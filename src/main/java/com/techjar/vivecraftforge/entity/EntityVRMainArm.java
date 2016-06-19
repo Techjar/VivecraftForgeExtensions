@@ -2,8 +2,8 @@ package com.techjar.vivecraftforge.entity;
 
 import net.minecraft.world.World;
 
-public class EntityVRRightArm extends EntityVRObject {
-	public EntityVRRightArm(World world) {
+public class EntityVRMainArm extends EntityVRArm {
+	public EntityVRMainArm(World world) {
 		super(world);
 	}
 }

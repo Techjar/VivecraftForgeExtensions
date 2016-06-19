@@ -22,6 +22,7 @@ public abstract class EntityVRObject extends Entity implements IEntityAdditional
 	
 	public EntityVRObject(World world) {
 		super(world);
+		this.ignoreFrustumCheck = true;
 	}
 
 	@Override
@@ -38,10 +39,10 @@ public abstract class EntityVRObject extends Entity implements IEntityAdditional
 	@Override
 	public void onUpdate() {
 		if (!worldObj.isRemote) {
-			/*if (getEntityPlayer() == null || getEntityPlayer().isDead) {
+			if (getEntityPlayer() == null || getEntityPlayer().isDead) {
 				this.setDead();
 				return;
-			}*/
+			}
 			dataWatcher.updateObject(2, (float)position.xCoord);
 			dataWatcher.updateObject(3, (float)position.yCoord);
 			dataWatcher.updateObject(4, (float)position.zCoord);
@@ -78,6 +79,7 @@ public abstract class EntityVRObject extends Entity implements IEntityAdditional
 	
 	@Override
 	public void writeSpawnData(ByteBuf buf) {
+		buf.writeInt(associatedEntityId);
 		buf.writeFloat((float)position.xCoord);
 		buf.writeFloat((float)position.yCoord);
 		buf.writeFloat((float)position.zCoord);
@@ -85,11 +87,11 @@ public abstract class EntityVRObject extends Entity implements IEntityAdditional
 		buf.writeFloat((float)rotX);
 		buf.writeFloat((float)rotY);
 		buf.writeFloat((float)rotZ);
-		buf.writeInt(associatedEntityId);
 	}
 
 	@Override
 	public void readSpawnData(ByteBuf buf) {
+		associatedEntityId = buf.readInt();
 		position.xCoord = positionLast.xCoord = buf.readFloat();
 		position.yCoord = positionLast.yCoord = buf.readFloat();
 		position.zCoord = positionLast.zCoord = buf.readFloat();
@@ -97,7 +99,6 @@ public abstract class EntityVRObject extends Entity implements IEntityAdditional
 		rotX = rotXLast = buf.readFloat();
 		rotY = rotYLast = buf.readFloat();
 		rotZ = rotZLast = buf.readFloat();
-		associatedEntityId = buf.readInt();
 	}
 	
 	public EntityPlayer getEntityPlayer() {

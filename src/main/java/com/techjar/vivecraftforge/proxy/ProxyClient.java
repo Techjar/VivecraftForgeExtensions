@@ -1,8 +1,13 @@
 package com.techjar.vivecraftforge.proxy;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.techjar.vivecraftforge.client.render.entity.*;
 import com.techjar.vivecraftforge.entity.*;
+import com.techjar.vivecraftforge.handler.HandlerClientTick;
 import com.techjar.vivecraftforge.handler.HandlerRenderEvent;
+import com.techjar.vivecraftforge.util.VRPlayerData;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetHandler;
@@ -12,6 +17,8 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ProxyClient extends ProxyCommon {
+	public static Map<Integer, VRPlayerData> vrPlayerIds = new HashMap<Integer, VRPlayerData>();
+
 	@Override
 	public void registerRenderers() {
 		this.registerEntityRenderers();
@@ -21,6 +28,7 @@ public class ProxyClient extends ProxyCommon {
 	public void registerEventHandlers() {
 		super.registerEventHandlers();
 		MinecraftForge.EVENT_BUS.register(new HandlerRenderEvent());
+		MinecraftForge.EVENT_BUS.register(new HandlerClientTick());
 	}
 
 	@Override

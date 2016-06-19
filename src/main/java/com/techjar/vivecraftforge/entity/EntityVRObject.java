@@ -21,7 +21,12 @@ public abstract class EntityVRObject extends Entity implements IEntityAdditional
 	protected EntityPlayer entityPlayer;
 	
 	public EntityVRObject(World world) {
+		this(world, -1);
+	}
+	
+	public EntityVRObject(World world, int associatedEntityId) {
 		super(world);
+		this.associatedEntityId = associatedEntityId;
 		this.ignoreFrustumCheck = true;
 	}
 

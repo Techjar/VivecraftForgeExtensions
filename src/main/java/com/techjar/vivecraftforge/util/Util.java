@@ -5,8 +5,13 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import com.techjar.vivecraftforge.entity.EntityVRObject;
+import com.techjar.vivecraftforge.proxy.ProxyClient;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.Vec3;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -64,11 +69,20 @@ public class Util {
 		return mat;
 	}
 	
+	@SideOnly(Side.CLIENT)
 	public static boolean isVRPlayer(EntityPlayer entity) {
-		return false; // TODO
+		return entity != Minecraft.getMinecraft().thePlayer && ProxyClient.vrPlayerIds.containsKey(entity.getEntityId());
 	}
 	
+	@SideOnly(Side.CLIENT)
 	public static float getVRPlayerHeadHeight(EntityPlayer entity) {
-		return (float)entity.posY + 1.62F; // TODO
+		VRPlayerData data = ProxyClient.vrPlayerIds.get(entity.getEntityId());
+		if (data != null && data.entityIds.size() > 0) {
+			EntityVRObject entityVR = (EntityVRObject)entity.worldObj.getEntityByID(data.entityIds.get(0));
+			if (entityVR != null) {
+				return (float)entityVR.position.yCoord;
+			}
+		}
+		return (float)entity.posY + 1.62F;
 	}
 }

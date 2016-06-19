@@ -19,7 +19,9 @@ public class VivecraftForgeChannelHandler extends FMLIndexedMessageToMessageCode
 	private EnumMap<Side, FMLEmbeddedChannel> channels;
 
 	private VivecraftForgeChannelHandler() {
-		//this.addDiscriminator(0, PacketGuiAction.class);
+		this.addDiscriminator(0, PacketInitialize.class);
+		this.addDiscriminator(1, PacketVRData.class);
+		this.addDiscriminator(2, PacketVRPlayerList.class);
 	}
 
 	public static VivecraftForgeChannelHandler init() {

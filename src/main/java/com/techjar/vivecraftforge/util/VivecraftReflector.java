@@ -26,7 +26,10 @@ public class VivecraftReflector {
 	private static Method method_getAimRotation;
 	private static Field field_lookaimController;
 	private static Field field_hmdPose;
+	private static Field field_vrSettings;
+	private static Field field_vrReverseHands;
 	private static boolean installed;
+	private static boolean newAPI;
 	static {
 		try {
 			Class.forName("com.mtbs3d.minecrift.provider.MCOpenVR", false, null);
@@ -34,10 +37,29 @@ public class VivecraftReflector {
 		} catch (ClassNotFoundException ex) {
 			installed = false;
 		}
+		try {
+			Class.forName("com.mtbs3d.minecrift.api.IRoomscaleProvider", false, null);
+			newAPI = true;
+		} catch (ClassNotFoundException ex) {
+			newAPI = false;
+		}
 	}
 	
 	public static boolean isInstalled() {
 		return installed;
+	}
+	
+	public static boolean isNewAPI() {
+		return newAPI;
+	}
+	
+	@SneakyThrows(Exception.class)
+	public static boolean getReverseHands() {
+		if (field_vrSettings == null) {
+			field_vrSettings = Minecraft.class.getDeclaredField("vrSettings");
+			field_vrReverseHands = Class.forName("com.mtbs3d.minecrift.settings.VRSettings").getDeclaredField("vrReverseHands");
+		}
+		return field_vrReverseHands.getBoolean((field_vrSettings.get(Minecraft.getMinecraft())));
 	}
 	
 	@SneakyThrows(Exception.class)

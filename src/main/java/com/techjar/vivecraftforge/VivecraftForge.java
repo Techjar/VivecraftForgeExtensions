@@ -1,9 +1,17 @@
 package com.techjar.vivecraftforge;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.minecraft.entity.player.EntityPlayer;
+
+import com.techjar.vivecraftforge.entity.EntityVRObject;
 import com.techjar.vivecraftforge.network.ViveMessage;
 import com.techjar.vivecraftforge.network.VivecraftForgeChannelHandler;
 import com.techjar.vivecraftforge.proxy.ProxyCommon;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -20,7 +28,7 @@ public class VivecraftForge {
 	@Instance("VivecraftForge")
 	public static VivecraftForge instance;
 	
-	@SidedProxy(clientSide = "com.techjar.vivecraftforge.proxy.ProxyClient", serverSide = "com.techjar.vivecraftforge.proxy.ProxyCommon")
+	@SidedProxy(clientSide = "com.techjar.vivecraftforge.proxy.ProxyClient", serverSide = "com.techjar.vivecraftforge.proxy.ProxyServer")
 	public static ProxyCommon proxy;
 
 	public static SimpleNetworkWrapper networkVersion;
@@ -37,15 +45,8 @@ public class VivecraftForge {
 
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		networkVersion = NetworkRegistry.INSTANCE.newSimpleChannel("MC|Vive|Version");
-		//networkFreeMove = NetworkRegistry.INSTANCE.newSimpleChannel("MC|Vive|FreeMove"); // currently not used
-		networkLegacy = NetworkRegistry.INSTANCE.newSimpleChannel("MC|Vive");
-		networkOK = NetworkRegistry.INSTANCE.newSimpleChannel("MC|ViveOK");
-		networkVersion.registerMessage(ViveMessage.Handle.class, ViveMessage.class, 86, Side.SERVER);
-		networkLegacy.registerMessage(ViveMessage.Handle.class, ViveMessage.class, 112, Side.SERVER);
-
 		packetPipeline = VivecraftForgeChannelHandler.init();
-		
+		proxy.registerNetworkChannels();
 		proxy.registerEventHandlers();
 		proxy.registerEntities();
 		proxy.registerRenderers();

@@ -3,6 +3,7 @@ package com.techjar.vivecraftforge.proxy;
 import com.techjar.vivecraftforge.VivecraftForge;
 import com.techjar.vivecraftforge.entity.*;
 import com.techjar.vivecraftforge.handler.HandlerEntityEvent;
+import com.techjar.vivecraftforge.handler.HandlerServerTick;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetHandler;
@@ -22,6 +23,10 @@ public class ProxyCommon {
 	
 	public void registerEventHandlers() {
 		MinecraftForge.EVENT_BUS.register(new HandlerEntityEvent());
+		MinecraftForge.EVENT_BUS.register(new HandlerServerTick());
+	}
+	
+	public void registerNetworkChannels() {
 	}
 
 	public EntityPlayer getPlayerFromNetHandler(INetHandler netHandler) {

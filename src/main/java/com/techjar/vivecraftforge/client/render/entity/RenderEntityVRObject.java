@@ -52,6 +52,7 @@ public abstract class RenderEntityVRObject extends Render {
 	@Override
 	public void doRender(Entity entity, double x, double y, double z, float yaw, float pitch) {
 		EntityVRObject entityVR = (EntityVRObject)entity;
+		if (entityVR.getEntityPlayer() == null || entityVR.getEntityPlayer() == Minecraft.getMinecraft().thePlayer) return;
 		Vector3 position = Vector3.lerp(Util.convertVector(entityVR.positionLast), Util.convertVector(entityVR.position), Minecraft.getMinecraft().timer.renderPartialTicks).subtract(new Vector3((float)RenderManager.renderPosX, (float)RenderManager.renderPosY, (float)RenderManager.renderPosZ));
 		Quaternion quat = Util.quatLerp(entityVR.getRotationLast(), entityVR.getRotation(), Minecraft.getMinecraft().timer.renderPartialTicks).normalized();
 		Matrix4f rotation = quat.getMatrix().rotate((float)Math.PI, new Vector3f(-1, 0, 0));
@@ -72,7 +73,7 @@ public abstract class RenderEntityVRObject extends Render {
 		preRenderModel(entityVR);
 		model.render(entity, 0, 0, 0, 0, 0, modelScale);
 		GL11.glPopMatrix();
-		ItemStack armorStack = entityVR.getEntityPlayer() != null ? ((AbstractClientPlayer)entityVR.getEntityPlayer()).inventory.armorItemInSlot(armorSlot) : null;
+		ItemStack armorStack = ((AbstractClientPlayer)entityVR.getEntityPlayer()).inventory.armorItemInSlot(armorSlot);
 		if (armorStack != null && armorStack.getItem() instanceof ItemArmor) {
 			bindTexture(RenderBiped.getArmorResource(entity, armorStack, 0, null));
 			ModelBiped model = armorSlot == 1 ? modelArmor : modelArmorChestplate;

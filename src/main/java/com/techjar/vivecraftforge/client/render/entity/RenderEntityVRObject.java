@@ -185,7 +185,7 @@ public abstract class RenderEntityVRObject extends Render {
 				GL11.glDepthFunc(GL11.GL_LEQUAL);
 			}
 			GL11.glPopMatrix();
-		} else if (armorSlot == 3 && armorStack.getItem() instanceof ItemBlock) {
+		} else if (armorSlot == 3 && armorStack != null && armorStack.getItem() instanceof ItemBlock) {
 			net.minecraftforge.client.IItemRenderer customRenderer = net.minecraftforge.client.MinecraftForgeClient.getItemRenderer(armorStack, net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED);
 			boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED, armorStack, net.minecraftforge.client.IItemRenderer.ItemRendererHelper.BLOCK_3D));
 
@@ -208,7 +208,7 @@ public abstract class RenderEntityVRObject extends Render {
 			GL11.glMultMatrix(buffer);
 			this.renderManager.itemRenderer.renderItem(entityVR.getEntityPlayer(), armorStack, 0);
 			GL11.glPopMatrix();
-		} else if (armorSlot == 3 && armorStack.getItem() == Items.skull) {
+		} else if (armorSlot == 3 && armorStack != null && armorStack.getItem() == Items.skull) {
 			GameProfile gameprofile = null;
 
 			if (armorStack.hasTagCompound())

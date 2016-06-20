@@ -14,6 +14,7 @@ import com.techjar.vivecraftforge.entity.EntityVROffHandArm;
 import com.techjar.vivecraftforge.network.packet.PacketVRPlayerList;
 import com.techjar.vivecraftforge.proxy.ProxyServer;
 import com.techjar.vivecraftforge.util.VRPlayerData;
+import com.techjar.vivecraftforge.util.VivecraftForgeLog;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
@@ -39,7 +40,7 @@ public class HandlerServerTick {
 						if (!entity.isSpawned()) {
 							if (entity.worldObj.spawnEntityInWorld(entity)) entity.setSpawned();
 						}
-						if (entity.isDead) {
+						if (entity.isDead || entity.worldObj != player.worldObj) {
 							createEntities(player, data);
 							break;
 						}
@@ -50,6 +51,7 @@ public class HandlerServerTick {
 	}
 	
 	private void createEntities(EntityPlayer player, VRPlayerData data) {
+		VivecraftForgeLog.debug("Creating new entities for %s", player);
 		for (Entity entity : data.entities) {
 			entity.setDead();
 		}

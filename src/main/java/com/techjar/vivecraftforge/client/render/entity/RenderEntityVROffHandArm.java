@@ -22,7 +22,7 @@ public class RenderEntityVROffHandArm extends RenderEntityVRObject {
 
 	@Override
 	public Vector3 getArmorModelOffset(EntityVRObject entity) {
-		return new Vector3((((EntityVRArm)entity).mirror ? 1F / 16F : -1F / 16F) - (5F / 16F), -6F / 16F, 0);
+		return new Vector3((((EntityVRArm)entity).mirror ? 1F / 16F + 5F / 16F : -1F / 16F - 5F / 16F), -6F / 16F, 0);
 	}
 
 	@Override

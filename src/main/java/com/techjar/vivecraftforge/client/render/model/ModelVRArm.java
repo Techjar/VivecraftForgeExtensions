@@ -6,15 +6,15 @@ import net.minecraft.entity.Entity;
 
 public class ModelVRArm extends ModelBase {
 	public ModelRenderer arm;
-	public boolean mirror;
 	
-	public ModelVRArm() {
-		this(0);
+	public ModelVRArm(boolean isLeftArm) {
+		this(0, isLeftArm);
 	}
 	
-	public ModelVRArm(float scaleFactor) {
+	public ModelVRArm(float scaleFactor, boolean isLeftArm) {
         arm = new ModelRenderer(this, 40, 16);
-        arm.addBox(-2.0F, -12.0F, -2.0F, 4, 12, 4, scaleFactor);
+        arm.mirror = isLeftArm;
+        arm.addBox(-2.0F, -6.0F, -2.0F, 4, 12, 4, scaleFactor);
         arm.setRotationPoint(0, 0, 0);
 	}
 
@@ -23,7 +23,6 @@ public class ModelVRArm extends ModelBase {
 	 */
 	@Override
 	public void render(Entity entity, float x, float y, float z, float yaw, float pitch, float whatIsThis) {
-		arm.mirror = mirror;
 		arm.render(whatIsThis);
 	}
 }

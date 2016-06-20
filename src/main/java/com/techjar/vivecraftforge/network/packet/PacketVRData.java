@@ -33,11 +33,13 @@ public class PacketVRData implements IPacket {
 	}
 
 	public PacketVRData(int id, Vec3 position, float rotW, float rotX, float rotY, float rotZ, boolean handsSwapped) {
+		this.id = id;
 		this.position = position;
 		this.rotW = rotW;
 		this.rotX = rotX;
 		this.rotY = rotY;
 		this.rotZ = rotZ;
+		this.handsSwapped = handsSwapped;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -80,6 +82,7 @@ public class PacketVRData implements IPacket {
 		if (data != null && data.entities.size() >= 3) {
 			data.handsSwapped = handsSwapped;
 			EntityVRObject entity = data.entities.get(id);
+			entity.setPosition(position.xCoord, position.yCoord, position.zCoord);
 			entity.position.xCoord = position.xCoord;
 			entity.position.yCoord = position.yCoord;
 			entity.position.zCoord = position.zCoord;

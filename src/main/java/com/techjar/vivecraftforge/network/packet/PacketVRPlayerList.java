@@ -30,7 +30,7 @@ public class PacketVRPlayerList implements IPacket {
 	public PacketVRPlayerList(Map<EntityPlayer, VRPlayerData> entityMap) {
 		entityIds = new HashMap<Integer, VRPlayerData>(entityMap.size());
 		for (Map.Entry<EntityPlayer, VRPlayerData> entry : entityMap.entrySet()) {
-			entityIds.put(entry.getKey().getEntityId(), entry.getValue());
+			entityIds.put(entry.getKey().getEntityId(), entry.getValue().copy());
 		}
 	}
 
@@ -56,7 +56,7 @@ public class PacketVRPlayerList implements IPacket {
 			entityIds.put(ByteBufUtils.readVarInt(buffer, 5), data);
 			data.handsSwapped = buffer.readBoolean();
 			int size2 = buffer.readUnsignedByte();
-			for (int j = 0; j < size; j++) {
+			for (int j = 0; j < size2; j++) {
 				data.entityIds.add(ByteBufUtils.readVarInt(buffer, 5));
 			}
 		}

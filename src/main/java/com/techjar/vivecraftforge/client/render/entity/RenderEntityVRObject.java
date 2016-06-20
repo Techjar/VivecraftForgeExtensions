@@ -1,6 +1,7 @@
 package com.techjar.vivecraftforge.client.render.entity;
 
 import java.nio.FloatBuffer;
+import java.util.UUID;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -9,6 +10,7 @@ import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
+import com.mojang.authlib.GameProfile;
 import com.techjar.vivecraftforge.client.render.model.ModelVRHead;
 import com.techjar.vivecraftforge.entity.EntityVRArm;
 import com.techjar.vivecraftforge.entity.EntityVRHead;
@@ -20,18 +22,27 @@ import com.techjar.vivecraftforge.util.Quaternion;
 import com.techjar.vivecraftforge.util.Util;
 import com.techjar.vivecraftforge.util.Vector3;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.tileentity.TileEntitySkullRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StringUtils;
 import net.minecraftforge.client.ForgeHooksClient;
 
 public abstract class RenderEntityVRObject extends Render {
@@ -55,16 +66,32 @@ public abstract class RenderEntityVRObject extends Render {
 		if (entityVR.getEntityPlayer() == null || entityVR.getEntityPlayer() == Minecraft.getMinecraft().thePlayer) return;
 		Vector3 position = Vector3.lerp(Util.convertVector(entityVR.positionLast), Util.convertVector(entityVR.position), Minecraft.getMinecraft().timer.renderPartialTicks).subtract(new Vector3((float)RenderManager.renderPosX, (float)RenderManager.renderPosY, (float)RenderManager.renderPosZ));
 		Quaternion quat = Util.quatLerp(entityVR.getRotationLast(), entityVR.getRotation(), Minecraft.getMinecraft().timer.renderPartialTicks).normalized();
-		Matrix4f rotation = quat.getMatrix().rotate((float)Math.PI, new Vector3f(-1, 0, 0));
-		if (entity instanceof EntityVRArm) rotation.rotate((float)Math.PI * -0.5F, new Vector3f(-1, 0, 0));
+		Matrix4f quatMatrix = quat.getMatrix();
+		Matrix4f rotation = new Matrix4f();
+		
+		// Don't ask about all this nonsense, found it by experimentation
+		rotation.rotate((float)Math.PI, new Vector3f(0, -1, 0));
+		Matrix4f.mul(rotation, quatMatrix, rotation);
+		if (entity instanceof EntityVRArm) {
+			rotation.rotate((float)Math.PI * 0.5F, new Vector3f(-1, 0, 0));
+			rotation.rotate((float)Math.PI, new Vector3f(0, -1, 0));
+		}
+		if (entity instanceof EntityVRHead) rotation.rotate((float)Math.PI, new Vector3f(0, 0, -1));
+		
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glPushMatrix();
 		float modelScale = 1F / 16F;
+		float scale = Util.getVRPlayerScale(entityVR.getEntityPlayer());
 		Matrix4f matrix = new Matrix4f();
 		matrix.translate(Util.convertVector(position));
+		if (entity instanceof EntityVRHead) {
+			matrix.translate(new Vector3f(0, -0.25F, 0));
+			scale /= Math.pow(scale, 0.5F);
+		}
 		Matrix4f.mul(matrix, rotation, matrix);
+		matrix.scale(new Vector3f(scale, scale, scale));
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
 		matrix.store(buffer);
 		buffer.rewind();
@@ -107,8 +134,10 @@ public abstract class RenderEntityVRObject extends Render {
 			}
 
 			matrix.setIdentity();
+			if (entity instanceof EntityVRHead) matrix.translate(new Vector3f(0, -0.25F, 0));
 			matrix.translate(Util.convertVector(position));
 			Matrix4f.mul(matrix, rotation, matrix);
+			matrix.scale(new Vector3f(scale, scale, scale));
 			matrix.translate(Util.convertVector(getArmorModelOffset(entityVR)));
 			buffer.rewind();
 			matrix.store(buffer);
@@ -156,6 +185,167 @@ public abstract class RenderEntityVRObject extends Render {
 				GL11.glDepthFunc(GL11.GL_LEQUAL);
 			}
 			GL11.glPopMatrix();
+		} else if (armorSlot == 3 && armorStack.getItem() instanceof ItemBlock) {
+            net.minecraftforge.client.IItemRenderer customRenderer = net.minecraftforge.client.MinecraftForgeClient.getItemRenderer(armorStack, net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED);
+            boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED, armorStack, net.minecraftforge.client.IItemRenderer.ItemRendererHelper.BLOCK_3D));
+
+			matrix.setIdentity();
+			if (entity instanceof EntityVRHead) matrix.translate(new Vector3f(0, -0.25F, 0));
+			matrix.translate(Util.convertVector(position));
+			Matrix4f.mul(matrix, rotation, matrix);
+			matrix.scale(new Vector3f(scale, scale, scale));
+			
+            if (is3D || RenderBlocks.renderItemIn3d(Block.getBlockFromItem(armorStack.getItem()).getRenderType())) {
+            	matrix.translate(new Vector3f(0.0F, -0.25F, 0.0F));
+            	matrix.rotate((float)Math.PI * 0.5F, new Vector3f(0, 1, 0));
+            	matrix.scale(new Vector3f(0.625F, -0.625F, -0.625F));
+            }
+
+			buffer.rewind();
+			matrix.store(buffer);
+			buffer.rewind();
+			GL11.glPushMatrix();
+			GL11.glMultMatrix(buffer);
+            this.renderManager.itemRenderer.renderItem(entityVR.getEntityPlayer(), armorStack, 0);
+            GL11.glPopMatrix();
+        } else if (armorSlot == 3 && armorStack.getItem() == Items.skull) {
+            GameProfile gameprofile = null;
+
+            if (armorStack.hasTagCompound())
+            {
+                NBTTagCompound nbttagcompound = armorStack.getTagCompound();
+
+                if (nbttagcompound.hasKey("SkullOwner", 10))
+                {
+                    gameprofile = NBTUtil.func_152459_a(nbttagcompound.getCompoundTag("SkullOwner"));
+                }
+                else if (nbttagcompound.hasKey("SkullOwner", 8) && !StringUtils.isNullOrEmpty(nbttagcompound.getString("SkullOwner")))
+                {
+                    gameprofile = new GameProfile((UUID)null, nbttagcompound.getString("SkullOwner"));
+                }
+            }
+
+			matrix.setIdentity();
+			if (entity instanceof EntityVRHead) matrix.translate(new Vector3f(0, -0.25F, 0));
+			matrix.translate(Util.convertVector(position));
+			Matrix4f.mul(matrix, rotation, matrix);
+			matrix.scale(new Vector3f(scale, scale, scale));
+        	matrix.scale(new Vector3f(1.0625F, -1.0625F, -1.0625F));
+			buffer.rewind();
+			matrix.store(buffer);
+			buffer.rewind();
+			GL11.glPushMatrix();
+			GL11.glMultMatrix(buffer);
+            TileEntitySkullRenderer.field_147536_b.func_152674_a(-0.5F, 0.0F, -0.5F, 1, 180.0F, armorStack.getItemDamage(), gameprofile);
+            GL11.glPopMatrix();
+        }
+		ItemStack heldStack = entityVR.getEntityPlayer().inventory.getCurrentItem();
+		if (heldStack != null && entity instanceof EntityVRMainArm) {
+			EntityPlayer player = entityVR.getEntityPlayer();
+			matrix.setIdentity();
+			matrix.translate(Util.convertVector(position));
+			Matrix4f.mul(matrix, rotation, matrix);
+			matrix.scale(new Vector3f(scale, scale, scale));
+			matrix.translate(new Vector3f(0.05F, -0.02F, -0.45F));
+			matrix.rotate((float)Math.PI * -0.3F, new Vector3f(-1, 0, 0));
+			buffer.rewind();
+			matrix.store(buffer);
+			buffer.rewind();
+			GL11.glPushMatrix();
+			GL11.glMultMatrix(buffer);
+			GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
+
+            if (player.fishEntity != null)
+            {
+            	heldStack = new ItemStack(Items.stick);
+            }
+
+            EnumAction enumaction = null;
+
+            if (player.getItemInUseCount() > 0)
+            {
+                enumaction = heldStack.getItemUseAction();
+            }
+
+            net.minecraftforge.client.IItemRenderer customRenderer = net.minecraftforge.client.MinecraftForgeClient.getItemRenderer(heldStack, net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED);
+            boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED, heldStack, net.minecraftforge.client.IItemRenderer.ItemRendererHelper.BLOCK_3D));
+
+            if (is3D || heldStack.getItem() instanceof ItemBlock && RenderBlocks.renderItemIn3d(Block.getBlockFromItem(heldStack.getItem()).getRenderType()))
+            {
+                float something = 0.5F * 0.75F;
+                GL11.glTranslatef(0.0F, 0.1875F, -0.3125F);
+                GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+                GL11.glScalef(-something, -something, something);
+            }
+            else if (heldStack.getItem() == Items.bow)
+            {
+            	float something = 0.625F;
+                GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
+                GL11.glRotatef(-20.0F, 0.0F, 1.0F, 0.0F);
+                GL11.glScalef(something, -something, something);
+                GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+            }
+            else if (heldStack.getItem().isFull3D())
+            {
+            	float something = 0.625F;
+
+                if (heldStack.getItem().shouldRotateAroundWhenRendering())
+                {
+                    GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
+                    GL11.glTranslatef(0.0F, -0.125F, 0.0F);
+                }
+
+                if (player.getItemInUseCount() > 0 && enumaction == EnumAction.block)
+                {
+                    GL11.glTranslatef(0.05F, 0.0F, -0.1F);
+                    GL11.glRotatef(-50.0F, 0.0F, 1.0F, 0.0F);
+                    GL11.glRotatef(-10.0F, 1.0F, 0.0F, 0.0F);
+                    GL11.glRotatef(-60.0F, 0.0F, 0.0F, 1.0F);
+                }
+
+                GL11.glTranslatef(0.0F, 0.1875F, 0.0F);
+                GL11.glScalef(something, -something, something);
+                GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+            }
+            else
+            {
+            	float something = 0.375F;
+                GL11.glTranslatef(0.25F, 0.1875F, -0.1875F);
+                GL11.glScalef(something, something, something);
+                GL11.glRotatef(60.0F, 0.0F, 0.0F, 1.0F);
+                GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(20.0F, 0.0F, 0.0F, 1.0F);
+            }
+
+            float f3;
+            int k;
+            float f12;
+
+            if (heldStack.getItem().requiresMultipleRenderPasses())
+            {
+                for (k = 0; k < heldStack.getItem().getRenderPasses(heldStack.getItemDamage()); ++k)
+                {
+                    int i = heldStack.getItem().getColorFromItemStack(heldStack, k);
+                    f12 = (float)(i >> 16 & 255) / 255.0F;
+                    f3 = (float)(i >> 8 & 255) / 255.0F;
+                    float f4 = (float)(i & 255) / 255.0F;
+                    GL11.glColor4f(f12, f3, f4, 1.0F);
+                    this.renderManager.itemRenderer.renderItem(player, heldStack, k);
+                }
+            }
+            else
+            {
+                k = heldStack.getItem().getColorFromItemStack(heldStack, 0);
+                float f11 = (float)(k >> 16 & 255) / 255.0F;
+                f12 = (float)(k >> 8 & 255) / 255.0F;
+                f3 = (float)(k & 255) / 255.0F;
+                GL11.glColor4f(f11, f12, f3, 1.0F);
+                this.renderManager.itemRenderer.renderItem(player, heldStack, 0);
+            }
+            GL11.glPopMatrix();
 		}
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glEnable(GL11.GL_CULL_FACE);

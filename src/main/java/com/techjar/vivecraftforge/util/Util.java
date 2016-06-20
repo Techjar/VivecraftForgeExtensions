@@ -85,4 +85,10 @@ public class Util {
 		}
 		return (float)entity.posY + 1.62F;
 	}
+	
+	@SideOnly(Side.CLIENT)
+	public static float getVRPlayerScale(EntityPlayer entity) {
+		float height = Util.getVRPlayerHeadHeight((EntityPlayer)entity) - 0.125F;
+		return Math.max((height - (float)entity.posY) / 1.62F, 0.1F);
+	}
 }

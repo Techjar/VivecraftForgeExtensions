@@ -14,10 +14,10 @@ public class ModelVRHead extends ModelBase {
 	
 	public ModelVRHead(float scaleFactor) {
 		head = new ModelRenderer(this, 0, 0);
-		head.addBox(-4.0F, -4.0F, -4.0F, 8, 8, 8, scaleFactor);
+		head.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, scaleFactor);
 		head.setRotationPoint(0, 0, 0);
 		headwear = new ModelRenderer(this, 32, 0);
-		headwear.addBox(-4.0F, -4.0F, -4.0F, 8, 8, 8, scaleFactor + 0.5F);
+		headwear.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, scaleFactor + 0.5F);
 		headwear.setRotationPoint(0, 0, 0);
 	}
 

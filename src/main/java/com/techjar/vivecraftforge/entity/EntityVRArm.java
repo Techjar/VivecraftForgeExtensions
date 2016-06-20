@@ -10,6 +10,10 @@ public abstract class EntityVRArm extends EntityVRObject {
 		super(world);
 	}
 
+	public EntityVRArm(World world, int associatedEntityId) {
+		super(world, associatedEntityId);
+	}
+
 	@Override
 	protected void entityInit() {
 		super.entityInit();

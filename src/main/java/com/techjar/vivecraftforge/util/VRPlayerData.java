@@ -10,12 +10,17 @@ public class VRPlayerData {
 	 * Only on server
 	 */
 	public List<EntityVRObject> entities = new ArrayList<EntityVRObject>();
-	/**
-	 * Only on client
-	 */
 	public List<Integer> entityIds = new ArrayList<Integer>();
 	/**
 	 * Not guaranteed to be up-to-date on client, don't rely on it there
 	 */
 	public boolean handsSwapped;
+	
+	public VRPlayerData copy() {
+		VRPlayerData data = new VRPlayerData();
+		data.handsSwapped = handsSwapped;
+		data.entities = new ArrayList<EntityVRObject>(entities);
+		data.entityIds = new ArrayList<Integer>(entityIds);
+		return data;
+	}
 }

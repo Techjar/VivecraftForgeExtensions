@@ -15,7 +15,7 @@ public class RenderEntityVRHead extends RenderEntityVRObject {
 
 	@Override
 	public Vector3 getArmorModelOffset(EntityVRObject entity) {
-		return new Vector3(0, 4F / 16F, 0);
+		return new Vector3(0, 0, 0);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.techjar.vivecraftforge.client.render.entity;
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 
 import com.techjar.vivecraftforge.client.render.model.ModelVRArm;
@@ -8,15 +9,20 @@ import com.techjar.vivecraftforge.entity.EntityVRObject;
 import com.techjar.vivecraftforge.util.Vector3;
 
 public class RenderEntityVROffHandArm extends RenderEntityVRObject {
+	protected ModelBase leftModel;
+	protected ModelBase rightModel;
+	
 	public RenderEntityVROffHandArm() {
 		super();
-		model = new ModelVRArm();
+		leftModel = new ModelVRArm(true);
+		rightModel = new ModelVRArm(false);
+		model = leftModel;
 		armorSlot = 2;
 	}
 
 	@Override
 	public Vector3 getArmorModelOffset(EntityVRObject entity) {
-		return new Vector3((((EntityVRArm)entity).mirror ? 1F / 16F : -1F / 16F) - (5F / 16F), -12F / 16F, 0);
+		return new Vector3((((EntityVRArm)entity).mirror ? 1F / 16F : -1F / 16F) - (5F / 16F), -6F / 16F, 0);
 	}
 
 	@Override
@@ -30,6 +36,6 @@ public class RenderEntityVROffHandArm extends RenderEntityVRObject {
 
 	@Override
 	public void preRenderModel(EntityVRObject entity) {
-		((ModelVRArm)model).mirror = !((EntityVRArm)entity).mirror;
+		model = ((EntityVRArm)entity).mirror ? rightModel : leftModel;
 	}
 }

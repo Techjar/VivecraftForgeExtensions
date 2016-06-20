@@ -11,8 +11,8 @@ public class ASMDelegator {
 	
 	public static void scalePlayer(Entity entity) {
 		if (entity instanceof EntityPlayer && Util.isVRPlayer((EntityPlayer)entity)) {
-			float height = Util.getVRPlayerHeadHeight((EntityPlayer)entity) - 0.25F;
-			float scale = 1.62F / (height - (float)entity.posY);
+			float scale = Util.getVRPlayerScale((EntityPlayer)entity);
+			//scale += scale * 0.1F;
 			GL11.glScalef(scale, scale, scale);
 		}
 	}

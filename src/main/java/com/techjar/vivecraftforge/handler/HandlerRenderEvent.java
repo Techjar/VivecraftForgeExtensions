@@ -17,13 +17,24 @@ import net.minecraft.item.ItemArmor;
 public class HandlerRenderEvent {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
-	public void onRenderPlayer(RenderPlayerEvent.Pre event) {
+	public void onRenderPlayerPre(RenderPlayerEvent.Pre event) {
 		if (Util.isVRPlayer(event.entityPlayer)) {
 			ModelBiped model = event.renderer.modelBipedMain;
 			model.bipedHead.showModel = false;
 			model.bipedLeftArm.showModel = false;
 			model.bipedRightArm.showModel = false;
 			model.bipedHeadwear.showModel = false;
+		}
+	}
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void onRenderPlayerPost(RenderPlayerEvent.Post event) {
+		if (Util.isVRPlayer(event.entityPlayer)) {
+			ModelBiped model = event.renderer.modelBipedMain;
+			model.bipedHead.showModel = true;
+			model.bipedLeftArm.showModel = true;
+			model.bipedRightArm.showModel = true;
+			model.bipedHeadwear.showModel = true;
 		}
 	}
 

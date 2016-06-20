@@ -15,8 +15,10 @@ import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public class ProxyClient extends ProxyCommon {
+	public static boolean isVFEServer;
 	public static Map<Integer, VRPlayerData> vrPlayerIds = new HashMap<Integer, VRPlayerData>();
 
 	@Override
@@ -28,7 +30,7 @@ public class ProxyClient extends ProxyCommon {
 	public void registerEventHandlers() {
 		super.registerEventHandlers();
 		MinecraftForge.EVENT_BUS.register(new HandlerRenderEvent());
-		MinecraftForge.EVENT_BUS.register(new HandlerClientTick());
+		FMLCommonHandler.instance().bus().register(new HandlerClientTick());
 	}
 
 	@Override

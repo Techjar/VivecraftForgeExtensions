@@ -13,12 +13,13 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 public abstract class EntityVRObject extends Entity implements IEntityAdditionalSpawnData {
-	public Vec3 position = Vec3.createVectorHelper(123, 75, 91);
-	public Vec3 positionLast = Vec3.createVectorHelper(123, 75, 91);
+	public Vec3 position = Vec3.createVectorHelper(0, 0, 0);
+	public Vec3 positionLast = Vec3.createVectorHelper(0, 0, 0);
 	public float rotW = 1, rotX, rotY, rotZ;
 	public float rotWLast = 1, rotXLast, rotYLast, rotZLast;
 	protected int associatedEntityId;
 	protected EntityPlayer entityPlayer;
+	private boolean spawned;
 	
 	public EntityVRObject(World world) {
 		this(world, -1);
@@ -111,6 +112,14 @@ public abstract class EntityVRObject extends Entity implements IEntityAdditional
 			entityPlayer = (EntityPlayer)worldObj.getEntityByID(associatedEntityId);
 		}
 		return entityPlayer;
+	}
+	
+	public boolean isSpawned() {
+		return spawned;
+	}
+	
+	public void setSpawned() {
+		spawned = true;
 	}
 	
 	@SideOnly(Side.CLIENT)

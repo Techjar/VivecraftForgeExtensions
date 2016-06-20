@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.EntityRegistry;
 
 public class ProxyCommon {
@@ -23,7 +24,7 @@ public class ProxyCommon {
 	
 	public void registerEventHandlers() {
 		MinecraftForge.EVENT_BUS.register(new HandlerEntityEvent());
-		MinecraftForge.EVENT_BUS.register(new HandlerServerTick());
+		FMLCommonHandler.instance().bus().register(new HandlerServerTick());
 	}
 	
 	public void registerNetworkChannels() {

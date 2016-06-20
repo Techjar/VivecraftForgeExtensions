@@ -44,16 +44,22 @@ public class VivecraftReflector {
 	private static boolean newAPI;
 	static {
 		try {
-			Class.forName("com.mtbs3d.minecrift.provider.MCOpenVR", false, null);
+			Class.forName("com.mtbs3d.minecrift.provider.MCOpenVR");
 			installed = true;
+			VivecraftForgeLog.debug("Vivecraft is installed.");
 		} catch (ClassNotFoundException ex) {
 			installed = false;
+			VivecraftForgeLog.debug("Vivecraft is not installed.");
 		}
-		try {
-			Class.forName("com.mtbs3d.minecrift.api.IRoomscaleProvider", false, null);
-			newAPI = true;
-		} catch (ClassNotFoundException ex) {
-			newAPI = false;
+		if (installed) {
+			try {
+				Class.forName("com.mtbs3d.minecrift.api.IRoomscaleProvider");
+				newAPI = true;
+				VivecraftForgeLog.debug("Vivecraft is new API.");
+			} catch (ClassNotFoundException ex) {
+				newAPI = false;
+				VivecraftForgeLog.debug("Vivecraft is old API.");
+			}
 		}
 	}
 
@@ -103,6 +109,7 @@ public class VivecraftReflector {
 		} else {
 			if (field_hmdPose == null) {
 				field_hmdPose = Class.forName("com.mtbs3d.minecrift.provider.MCOpenVR").getDeclaredField("hmdPose");
+				field_hmdPose.setAccessible(true);
 			}
 			return convertMatrix(field_hmdPose.get(null));
 		}
@@ -175,6 +182,7 @@ public class VivecraftReflector {
 	private static Matrix4f convertMatrix(Object object) {
 		if (field_M == null) {
 			field_M = Class.forName("de.fruitfly.ovr.structs.Matrix4f").getDeclaredField("M");
+			field_M.setAccessible(true);
 		}
 		float[][] array = (float[][])field_M.get(object);
 		Matrix4f matrix = new Matrix4f();
@@ -194,6 +202,6 @@ public class VivecraftReflector {
 		matrix.m31 = array[3][1];
 		matrix.m32 = array[3][2];
 		matrix.m33 = array[3][3];
-		return matrix;
+		return Matrix4f.transpose(matrix, matrix);
 	}
 }

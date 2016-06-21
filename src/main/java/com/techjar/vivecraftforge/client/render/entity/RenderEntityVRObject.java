@@ -68,6 +68,7 @@ public abstract class RenderEntityVRObject extends Render {
 		EntityVRObject entityVR = (EntityVRObject)entity;
 		if (entityVR.getEntityPlayer() == null || entityVR.getEntityPlayer() == Minecraft.getMinecraft().thePlayer) return;
 		VRPlayerData data = ProxyClient.vrPlayerIds.get(entityVR.getEntityPlayer().getEntityId());
+		if (data == null) return;
 		Vector3 position = Vector3.lerp(Util.convertVector(entityVR.positionLast), Util.convertVector(entityVR.position), Minecraft.getMinecraft().timer.renderPartialTicks).subtract(new Vector3((float)RenderManager.renderPosX, (float)RenderManager.renderPosY, (float)RenderManager.renderPosZ));
 		Quaternion quat = Util.quatLerp(entityVR.getRotationLast(), entityVR.getRotation(), Minecraft.getMinecraft().timer.renderPartialTicks).normalized();
 		Matrix4f quatMatrix = quat.getMatrix();

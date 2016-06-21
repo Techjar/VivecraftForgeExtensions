@@ -22,6 +22,7 @@ public class VivecraftForgeChannelHandler extends FMLIndexedMessageToMessageCode
 		this.addDiscriminator(0, PacketInitialize.class);
 		this.addDiscriminator(1, PacketVRData.class);
 		this.addDiscriminator(2, PacketVRPlayerList.class);
+		this.addDiscriminator(3, PacketPlayerWorldScale.class);
 	}
 
 	public static VivecraftForgeChannelHandler init() {

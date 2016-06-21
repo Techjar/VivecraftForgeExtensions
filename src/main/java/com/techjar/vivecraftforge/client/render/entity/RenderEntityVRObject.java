@@ -17,9 +17,12 @@ import com.techjar.vivecraftforge.entity.EntityVRHead;
 import com.techjar.vivecraftforge.entity.EntityVROffHandArm;
 import com.techjar.vivecraftforge.entity.EntityVRObject;
 import com.techjar.vivecraftforge.entity.EntityVRMainArm;
+import com.techjar.vivecraftforge.proxy.ProxyClient;
+import com.techjar.vivecraftforge.proxy.ProxyServer;
 import com.techjar.vivecraftforge.util.Axis;
 import com.techjar.vivecraftforge.util.Quaternion;
 import com.techjar.vivecraftforge.util.Util;
+import com.techjar.vivecraftforge.util.VRPlayerData;
 import com.techjar.vivecraftforge.util.Vector3;
 
 import net.minecraft.block.Block;
@@ -64,13 +67,14 @@ public abstract class RenderEntityVRObject extends Render {
 	public void doRender(Entity entity, double x, double y, double z, float yaw, float pitch) {
 		EntityVRObject entityVR = (EntityVRObject)entity;
 		if (entityVR.getEntityPlayer() == null || entityVR.getEntityPlayer() == Minecraft.getMinecraft().thePlayer) return;
+		VRPlayerData data = ProxyClient.vrPlayerIds.get(entityVR.getEntityPlayer().getEntityId());
 		Vector3 position = Vector3.lerp(Util.convertVector(entityVR.positionLast), Util.convertVector(entityVR.position), Minecraft.getMinecraft().timer.renderPartialTicks).subtract(new Vector3((float)RenderManager.renderPosX, (float)RenderManager.renderPosY, (float)RenderManager.renderPosZ));
 		Quaternion quat = Util.quatLerp(entityVR.getRotationLast(), entityVR.getRotation(), Minecraft.getMinecraft().timer.renderPartialTicks).normalized();
 		Matrix4f quatMatrix = quat.getMatrix();
 		Matrix4f rotation = new Matrix4f();
 		
 		// Don't ask about all this nonsense, found it by experimentation
-		rotation.rotate((float)Math.PI, new Vector3f(0, -1, 0));
+		if (!data.newAPI) rotation.rotate((float)Math.PI, new Vector3f(0, -1, 0));
 		Matrix4f.mul(rotation, quatMatrix, rotation);
 		if (entity instanceof EntityVRArm) {
 			rotation.rotate((float)Math.PI * 0.5F, new Vector3f(-1, 0, 0));
@@ -88,7 +92,7 @@ public abstract class RenderEntityVRObject extends Render {
 		matrix.translate(Util.convertVector(position));
 		if (entity instanceof EntityVRHead) {
 			matrix.translate(new Vector3f(0, -0.25F, 0));
-			scale /= Math.pow(scale, 0.5F);
+			if (scale < 1) scale /= Math.pow(scale, 0.4F);
 		}
 		Matrix4f.mul(matrix, rotation, matrix);
 		matrix.scale(new Vector3f(scale, scale, scale));

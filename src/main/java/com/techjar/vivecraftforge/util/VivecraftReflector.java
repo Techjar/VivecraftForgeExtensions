@@ -40,6 +40,7 @@ public class VivecraftReflector {
 	// Other stuff
 	private static Field field_vrSettings;
 	private static Field field_vrReverseHands;
+	private static Field field_vrWorldScale;
 	private static boolean installed;
 	private static boolean newAPI;
 	static {
@@ -73,18 +74,33 @@ public class VivecraftReflector {
 
 	@SneakyThrows(Exception.class)
 	public static boolean getReverseHands() {
-		if (field_vrSettings == null) {
-			field_vrSettings = Minecraft.class.getDeclaredField("vrSettings");
+		if (field_vrReverseHands == null) {
 			field_vrReverseHands = Class.forName("com.mtbs3d.minecrift.settings.VRSettings").getDeclaredField("vrReverseHands");
 		}
-		return field_vrReverseHands.getBoolean((field_vrSettings.get(Minecraft.getMinecraft())));
+		return field_vrReverseHands.getBoolean(getVRSettings());
+	}
+
+	@SneakyThrows(Exception.class)
+	public static float getWorldScale() {
+		if (field_vrWorldScale == null) {
+			field_vrWorldScale = Class.forName("com.mtbs3d.minecrift.settings.VRSettings").getDeclaredField("vrWorldScale");
+		}
+		return field_vrWorldScale.getFloat(getVRSettings());
+	}
+
+	@SneakyThrows(Exception.class)
+	public static Object getVRSettings() {
+		if (field_vrSettings == null) {
+			field_vrSettings = Minecraft.class.getDeclaredField("vrSettings");
+		}
+		return field_vrSettings.get(Minecraft.getMinecraft());
 	}
 
 	@SneakyThrows(Exception.class)
 	public static Vec3 getHeadPosition() {
 		if (newAPI) {
 			if (method_getHMDPos_World == null) {
-				method_getHMDPos_World = Class.forName("com.mtbs3d.minecrift.api.IRoomscaleProvider").getMethod("getHMDPos_World");
+				method_getHMDPos_World = Class.forName("com.mtbs3d.minecrift.api.IRoomscaleAdapter").getMethod("getHMDPos_World");
 			}
 			return (Vec3)method_getHMDPos_World.invoke(getVRPlayer());
 		} else {
@@ -99,12 +115,13 @@ public class VivecraftReflector {
 	public static Matrix4f getHeadRotation() {
 		if (newAPI) {
 			if (method_getHMDMatrix_World == null) {
-				method_getHMDMatrix_World = Class.forName("com.mtbs3d.minecrift.api.IRoomscaleProvider").getMethod("getHMDMatrix_World");
+				method_getHMDMatrix_World = Class.forName("com.mtbs3d.minecrift.api.IRoomscaleAdapter").getMethod("getHMDMatrix_World");
 			}
 			FloatBuffer buffer = (FloatBuffer)method_getHMDMatrix_World.invoke(getVRPlayer());
 			buffer.rewind();
 			Matrix4f matrix = new Matrix4f();
 			matrix.load(buffer);
+			matrix.transpose();
 			return matrix;
 		} else {
 			if (field_hmdPose == null) {
@@ -122,8 +139,8 @@ public class VivecraftReflector {
 	public static Vec3 getControllerPositon(int controller) {
 		if (newAPI) {
 			if (method_getControllerMainPos_World == null || method_getControllerOffhandPos_World == null) {
-				method_getControllerMainPos_World = Class.forName("com.mtbs3d.minecrift.api.IRoomscaleProvider").getMethod("getControllerMainPos_World");
-				method_getControllerOffhandPos_World = Class.forName("com.mtbs3d.minecrift.api.IRoomscaleProvider").getMethod("getControllerOffhandPos_World");
+				method_getControllerMainPos_World = Class.forName("com.mtbs3d.minecrift.api.IRoomscaleAdapter").getMethod("getControllerMainPos_World");
+				method_getControllerOffhandPos_World = Class.forName("com.mtbs3d.minecrift.api.IRoomscaleAdapter").getMethod("getControllerOffhandPos_World");
 			}
 			if (controller == 0) {
 				return (Vec3)method_getControllerMainPos_World.invoke(getVRPlayer());
@@ -147,7 +164,7 @@ public class VivecraftReflector {
 	public static Matrix4f getControllerRotation(int controller) {
 		if (newAPI) {
 			if (method_getControllerMatrix_World == null) {
-				method_getControllerMatrix_World = Class.forName("com.mtbs3d.minecrift.api.IRoomscaleProvider").getMethod("getControllerMatrix_World", Integer.TYPE);
+				method_getControllerMatrix_World = Class.forName("com.mtbs3d.minecrift.api.IRoomscaleAdapter").getMethod("getControllerMatrix_World", Integer.TYPE);
 			}
 			FloatBuffer buffer = (FloatBuffer)method_getControllerMatrix_World.invoke(getVRPlayer(), controller);
 			buffer.rewind();

@@ -38,10 +38,13 @@ public class PacketVRPlayerList implements IPacket {
 	public void encodePacket(ChannelHandlerContext context, ByteBuf buffer) {
 		ByteBufUtils.writeVarInt(buffer, entityIds.size(), 5);
 		for (Map.Entry<Integer, VRPlayerData> entry : entityIds.entrySet()) {
+			VRPlayerData data = entry.getValue();
 			ByteBufUtils.writeVarInt(buffer, entry.getKey(), 5);
-			buffer.writeBoolean(entry.getValue().handsSwapped);
-			buffer.writeByte(entry.getValue().entityIds.size());
-			for (int id : entry.getValue().entityIds) {
+			buffer.writeBoolean(data.handsSwapped);
+			buffer.writeBoolean(data.newAPI);
+			buffer.writeFloat(data.worldScale);
+			buffer.writeByte(data.entityIds.size());
+			for (int id : data.entityIds) {
 				ByteBufUtils.writeVarInt(buffer, id, 5);
 			}
 		}
@@ -55,6 +58,8 @@ public class PacketVRPlayerList implements IPacket {
 			VRPlayerData data = new VRPlayerData();
 			entityIds.put(ByteBufUtils.readVarInt(buffer, 5), data);
 			data.handsSwapped = buffer.readBoolean();
+			data.newAPI = buffer.readBoolean();
+			data.worldScale = buffer.readFloat();
 			int size2 = buffer.readUnsignedByte();
 			for (int j = 0; j < size2; j++) {
 				data.entityIds.add(ByteBufUtils.readVarInt(buffer, 5));

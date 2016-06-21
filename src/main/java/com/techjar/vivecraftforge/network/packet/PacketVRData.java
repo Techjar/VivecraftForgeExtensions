@@ -77,7 +77,6 @@ public class PacketVRData implements IPacket {
 
 	@Override
 	public void handleServer(EntityPlayer player) {
-		EntityPlayerMP pl = (EntityPlayerMP)player;
 		VRPlayerData data = ProxyServer.vrPlayers.get(player);
 		if (data != null && data.entities.size() >= 3) {
 			data.handsSwapped = handsSwapped;

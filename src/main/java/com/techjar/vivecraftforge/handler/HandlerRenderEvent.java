@@ -24,6 +24,7 @@ public class HandlerRenderEvent {
 			model.bipedLeftArm.showModel = false;
 			model.bipedRightArm.showModel = false;
 			model.bipedHeadwear.showModel = false;
+			event.entityPlayer.ignoreFrustumCheck = true;
 		}
 	}
 	@SubscribeEvent

@@ -53,7 +53,7 @@ public class VivecraftReflector {
 		}
 		if (installed) {
 			try {
-				Class.forName("com.mtbs3d.minecrift.api.IRoomscaleProvider");
+				Class.forName("com.mtbs3d.minecrift.api.IRoomscaleAdapter");
 				newAPI = true;
 				VivecraftForgeLog.debug("Vivecraft is new API.");
 			} catch (ClassNotFoundException ex) {

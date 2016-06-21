@@ -18,42 +18,42 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class Util {
 	private Util() {
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public static Vector2f convertVector(Vector2 vector) {
-        return new Vector2f(vector.getX(), vector.getY());
-    }
+		return new Vector2f(vector.getX(), vector.getY());
+	}
 
 	@SideOnly(Side.CLIENT)
-    public static Vector2 convertVector(Vector2f vector) {
-        return new Vector2(vector.getX(), vector.getY());
-    }
+	public static Vector2 convertVector(Vector2f vector) {
+		return new Vector2(vector.getX(), vector.getY());
+	}
 
 	@SideOnly(Side.CLIENT)
-    public static Vector3f convertVector(Vector3 vector) {
-        return new Vector3f(vector.getX(), vector.getY(), vector.getZ());
-    }
+	public static Vector3f convertVector(Vector3 vector) {
+		return new Vector3f(vector.getX(), vector.getY(), vector.getZ());
+	}
 
 	@SideOnly(Side.CLIENT)
-    public static Vector3 convertVector(Vector3f vector) {
-        return new Vector3(vector.getX(), vector.getY(), vector.getZ());
-    }
+	public static Vector3 convertVector(Vector3f vector) {
+		return new Vector3(vector.getX(), vector.getY(), vector.getZ());
+	}
 
 	@SideOnly(Side.CLIENT)
-    public static Vector3 convertVector(Vec3 vector) {
-        return new Vector3((float)vector.xCoord, (float)vector.yCoord, (float)vector.zCoord);
-    }
+	public static Vector3 convertVector(Vec3 vector) {
+		return new Vector3((float)vector.xCoord, (float)vector.yCoord, (float)vector.zCoord);
+	}
 
 	@SideOnly(Side.CLIENT)
-    public static Quaternion quatLerp(Quaternion start, Quaternion end, float fraction) {
-        Quaternion quat = new Quaternion();
-        quat.w = start.w + (end.w - start.w) * fraction;
-        quat.x = start.x + (end.x - start.x) * fraction;
-        quat.y = start.y + (end.y - start.y) * fraction;
-        quat.z = start.z + (end.z - start.z) * fraction;
-        return quat;
-    }
-	
+	public static Quaternion quatLerp(Quaternion start, Quaternion end, float fraction) {
+		Quaternion quat = new Quaternion();
+		quat.w = start.w + (end.w - start.w) * fraction;
+		quat.x = start.x + (end.x - start.x) * fraction;
+		quat.y = start.y + (end.y - start.y) * fraction;
+		quat.z = start.z + (end.z - start.z) * fraction;
+		return quat;
+	}
+
 	@SideOnly(Side.CLIENT)
 	public static Matrix4f matrix3to4(Matrix3f matrix) {
 		Matrix4f mat = new Matrix4f();
@@ -68,12 +68,12 @@ public class Util {
 		mat.m22 = matrix.m22;
 		return mat;
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public static boolean isVRPlayer(EntityPlayer entity) {
 		return entity != Minecraft.getMinecraft().thePlayer && ProxyClient.vrPlayerIds.containsKey(entity.getEntityId());
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public static float getVRPlayerHeadHeight(EntityPlayer entity) {
 		VRPlayerData data = ProxyClient.vrPlayerIds.get(entity.getEntityId());
@@ -85,7 +85,7 @@ public class Util {
 		}
 		return (float)entity.posY + 1.62F;
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public static float getVRPlayerScale(EntityPlayer entity) {
 		float height = Util.getVRPlayerHeadHeight((EntityPlayer)entity) - 0.125F;

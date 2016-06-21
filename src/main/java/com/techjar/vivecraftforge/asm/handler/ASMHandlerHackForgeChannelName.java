@@ -9,6 +9,7 @@ import com.techjar.vivecraftforge.asm.ASMClassHandler;
 import com.techjar.vivecraftforge.asm.ASMMethodHandler;
 import com.techjar.vivecraftforge.asm.ClassTuple;
 import com.techjar.vivecraftforge.asm.MethodTuple;
+import com.techjar.vivecraftforge.util.Util;
 import com.techjar.vivecraftforge.util.VivecraftForgeLog;
 
 public class ASMHandlerHackForgeChannelName extends ASMClassHandler {

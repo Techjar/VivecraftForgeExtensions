@@ -14,11 +14,13 @@ public class ClassTransformer implements IClassTransformer {
 		asmHandlers.add(new ASMHandlerEnableTeleporting());
 		asmHandlers.add(new ASMHandlerHackForgeChannelName());
 		asmHandlers.add(new ASMHandlerPlayerScaling());
+		asmHandlers.add(new ASMHandlerIncreaseReachDistance());
 	}
 	
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] bytes) {
 		for (ASMClassHandler handler : asmHandlers) {
+			if (!handler.shouldPatchClass()) continue;
 			ClassTuple tuple = handler.getDesiredClass();
 			if (name.equals(tuple.classNameObf)) {
 				VivecraftForgeLog.debug("Patching class: " + name + " (" + tuple.className + ")");

@@ -15,6 +15,10 @@ public abstract class ASMClassHandler {
 	public abstract ASMMethodHandler[] getMethodHandlers();
 	public abstract boolean getComputeFrames();
 	
+	public boolean shouldPatchClass() {
+		return true;
+	}
+	
 	public byte[] patchClass(byte[] bytes, boolean obfuscated) {
 		ClassNode classNode = new ClassNode();
 		ClassReader classReader = new ClassReader(bytes);

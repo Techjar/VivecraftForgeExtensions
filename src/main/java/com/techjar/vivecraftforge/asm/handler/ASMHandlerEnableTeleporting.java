@@ -9,6 +9,7 @@ import com.techjar.vivecraftforge.asm.ASMClassHandler;
 import com.techjar.vivecraftforge.asm.ASMMethodHandler;
 import com.techjar.vivecraftforge.asm.ClassTuple;
 import com.techjar.vivecraftforge.asm.MethodTuple;
+import com.techjar.vivecraftforge.util.Util;
 import com.techjar.vivecraftforge.util.VivecraftForgeLog;
 
 public class ASMHandlerEnableTeleporting extends ASMClassHandler {
@@ -26,20 +27,6 @@ public class ASMHandlerEnableTeleporting extends ASMClassHandler {
 	public boolean getComputeFrames() {
 		return false;
 	}
-	
-	/*@Override
-	public byte[] patchClass(byte[] bytes, boolean obfuscated) {
-		try { // Stupid shit to only patch if we're on a server
-			Class.forName("net.minecraft.client.renderer.entity.RenderPlayer", false, null);
-		} catch (ClassNotFoundException ex) {
-			try {
-				Class.forName("bop", false, null);
-			} catch (ClassNotFoundException ex2) {
-				return super.patchClass(bytes, obfuscated);
-			}
-		}
-		return bytes;
-	}*/
 
 	public static class MethodHandler implements ASMMethodHandler {
 		@Override

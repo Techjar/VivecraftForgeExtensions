@@ -7,6 +7,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import com.techjar.vivecraftforge.entity.EntityVRObject;
 import com.techjar.vivecraftforge.proxy.ProxyClient;
+import com.techjar.vivecraftforge.proxy.ProxyServer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -72,6 +73,10 @@ public class Util {
 	@SideOnly(Side.CLIENT)
 	public static boolean isVRPlayer(EntityPlayer entity) {
 		return entity != Minecraft.getMinecraft().thePlayer && ProxyClient.vrPlayerIds.containsKey(entity.getEntityId());
+	}
+
+	public static boolean isVRPlayerServer(EntityPlayer entity) {
+		return ProxyServer.vrPlayers.containsKey(entity);
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -29,7 +29,7 @@ public abstract class EntityVRObject extends Entity implements IEntityAdditional
 		super(world);
 		this.associatedEntityId = associatedEntityId;
 		this.ignoreFrustumCheck = true;
-        this.renderDistanceWeight = 10.0D;
+		this.renderDistanceWeight = 10.0D;
 	}
 
 	@Override

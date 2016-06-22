@@ -101,7 +101,6 @@ public class Util {
 	public static float getVRPlayerWorldScale(EntityPlayer entity) {
 		VRPlayerData data = ProxyClient.vrPlayerIds.get(entity.getEntityId());
 		if (data != null) {
-			//System.out.println(data.worldScale);
 			return data.worldScale;
 		}
 		return 1;

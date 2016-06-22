@@ -21,10 +21,10 @@ public class ASMDelegator {
 	}
 	
 	public static double playerEntityReachDistance(EntityPlayer player, double originalValue) {
-		return originalValue < 100 * 100 && Util.isVRPlayerServer(player) ? 100 * 100 : originalValue;
+		return originalValue < 256 * 256 && Util.isVRPlayerServer(player) ? 256 * 256 : originalValue;
 	}
 	
 	public static double playerBlockReachDistance(EntityPlayer player, double originalValue) {
-		return originalValue < 100 && Util.isVRPlayerServer(player) ? 100 : originalValue;
+		return originalValue < 256 && Util.isVRPlayerServer(player) ? 256 : originalValue;
 	}
 }

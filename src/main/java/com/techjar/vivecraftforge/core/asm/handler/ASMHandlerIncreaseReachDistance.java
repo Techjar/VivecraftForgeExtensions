@@ -1,4 +1,4 @@
-package com.techjar.vivecraftforge.asm.handler;
+package com.techjar.vivecraftforge.core.asm.handler;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
@@ -10,10 +10,10 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
-import com.techjar.vivecraftforge.asm.ASMClassHandler;
-import com.techjar.vivecraftforge.asm.ASMMethodHandler;
-import com.techjar.vivecraftforge.asm.ClassTuple;
-import com.techjar.vivecraftforge.asm.MethodTuple;
+import com.techjar.vivecraftforge.core.asm.ASMClassHandler;
+import com.techjar.vivecraftforge.core.asm.ASMMethodHandler;
+import com.techjar.vivecraftforge.core.asm.ClassTuple;
+import com.techjar.vivecraftforge.core.asm.MethodTuple;
 import com.techjar.vivecraftforge.util.Util;
 import com.techjar.vivecraftforge.util.VivecraftForgeLog;
 

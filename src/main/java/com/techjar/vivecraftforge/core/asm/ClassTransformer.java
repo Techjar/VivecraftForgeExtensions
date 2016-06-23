@@ -1,11 +1,14 @@
-package com.techjar.vivecraftforge.asm;
+package com.techjar.vivecraftforge.core.asm;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.techjar.vivecraftforge.asm.handler.*;
+import org.objectweb.asm.Type;
+
+import com.techjar.vivecraftforge.core.asm.handler.*;
 import com.techjar.vivecraftforge.util.VivecraftForgeLog;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.launchwrapper.IClassTransformer;
 
 public class ClassTransformer implements IClassTransformer {

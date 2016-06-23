@@ -1,4 +1,4 @@
-package com.techjar.vivecraftforge;
+package com.techjar.vivecraftforge.core;
 
 import java.util.Arrays;
 

@@ -1,4 +1,4 @@
-package com.techjar.vivecraftforge.asm;
+package com.techjar.vivecraftforge.core.asm;
 
 public class MethodTuple {
 	public final String methodName;

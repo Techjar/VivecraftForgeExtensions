@@ -1,4 +1,4 @@
-package com.techjar.vivecraftforge.asm;
+package com.techjar.vivecraftforge.core.asm;
 
 import java.util.ArrayList;
 import java.util.Iterator;

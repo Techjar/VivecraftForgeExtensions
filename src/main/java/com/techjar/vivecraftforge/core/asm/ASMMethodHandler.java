@@ -1,4 +1,4 @@
-package com.techjar.vivecraftforge.asm;
+package com.techjar.vivecraftforge.core.asm;
 
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;

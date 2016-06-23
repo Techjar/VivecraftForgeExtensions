@@ -1,9 +1,9 @@
-package com.techjar.vivecraftforge;
+package com.techjar.vivecraftforge.core;
 
 import java.io.File;
 import java.util.Map;
 
-import com.techjar.vivecraftforge.asm.ClassTransformer;
+import com.techjar.vivecraftforge.core.asm.ClassTransformer;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
@@ -13,7 +13,7 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 
 @Name("VivecraftForgeCore")
 @MCVersion("1.7.10")
-@TransformerExclusions("com.techjar.vivecraftforge")
+@TransformerExclusions("com.techjar.vivecraftforge.core")
 //@SortingIndex(1001)
 public class FMLPlugin implements IFMLLoadingPlugin {
 	public static File location;

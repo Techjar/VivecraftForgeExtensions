@@ -42,5 +42,6 @@ public class HandlerClientTick {
 		ProxyClient.isVFEServer = false;
 		ProxyClient.worldScaleLast = 0;
 		ProxyClient.vrPlayerIds.clear();
+		System.out.println("lolo");
 	}
 }

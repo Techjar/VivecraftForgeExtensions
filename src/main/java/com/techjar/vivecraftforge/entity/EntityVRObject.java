@@ -108,6 +108,13 @@ public abstract class EntityVRObject extends Entity implements IEntityAdditional
 		rotZ = rotZLast = buf.readFloat();
 	}
 	
+	@Override
+	public void setPosition(double x, double y, double z) {
+        this.posX = x;
+        this.posY = y;
+        this.posZ = z;
+	}
+
 	public EntityPlayer getEntityPlayer() {
 		if (entityPlayer == null) {
 			entityPlayer = (EntityPlayer)worldObj.getEntityByID(associatedEntityId);

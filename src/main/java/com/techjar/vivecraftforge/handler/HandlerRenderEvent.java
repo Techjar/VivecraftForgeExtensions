@@ -104,6 +104,6 @@ public class HandlerRenderEvent {
 				return;
 			}
 		}
-		event.result = 0;
+		event.result = -2;
 	}
 }

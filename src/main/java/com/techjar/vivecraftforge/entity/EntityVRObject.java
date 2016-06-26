@@ -110,9 +110,9 @@ public abstract class EntityVRObject extends Entity implements IEntityAdditional
 	
 	@Override
 	public void setPosition(double x, double y, double z) {
-        this.posX = x;
-        this.posY = y;
-        this.posZ = z;
+		this.posX = x;
+		this.posY = y;
+		this.posZ = z;
 	}
 
 	public EntityPlayer getEntityPlayer() {

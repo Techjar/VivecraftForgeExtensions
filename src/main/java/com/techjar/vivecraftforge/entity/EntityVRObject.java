@@ -115,6 +115,11 @@ public abstract class EntityVRObject extends Entity implements IEntityAdditional
 		this.posZ = z;
 	}
 
+	@SideOnly(Side.CLIENT)
+    public boolean isInRangeToRenderDist(double dist) {
+        return true;
+	}
+
 	public EntityPlayer getEntityPlayer() {
 		if (entityPlayer == null) {
 			entityPlayer = (EntityPlayer)worldObj.getEntityByID(associatedEntityId);

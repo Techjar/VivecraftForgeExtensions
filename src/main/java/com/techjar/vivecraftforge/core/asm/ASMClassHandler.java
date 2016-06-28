@@ -19,10 +19,14 @@ public abstract class ASMClassHandler {
 		return true;
 	}
 	
-	public byte[] patchClass(byte[] bytes, boolean obfuscated) {
+	protected void patchClass(ClassNode node) {
+	}
+	
+	public final byte[] patchClass(byte[] bytes, boolean obfuscated) {
 		ClassNode classNode = new ClassNode();
 		ClassReader classReader = new ClassReader(bytes);
 		classReader.accept(classNode, 0);
+		patchClass(classNode);
 		ASMMethodHandler[] handlers = getMethodHandlers();
 		ArrayList<MethodNode> methodsCopy = new ArrayList<MethodNode>(classNode.methods);
 		for (Iterator<MethodNode> methods = methodsCopy.iterator(); methods.hasNext(); ) {

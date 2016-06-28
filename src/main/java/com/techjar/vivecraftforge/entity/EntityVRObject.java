@@ -116,8 +116,8 @@ public abstract class EntityVRObject extends Entity implements IEntityAdditional
 	}
 
 	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double dist) {
-        return true;
+	public boolean isInRangeToRenderDist(double dist) {
+		return true;
 	}
 
 	public EntityPlayer getEntityPlayer() {

@@ -27,8 +27,7 @@ public class VivecraftReflector {
 	// New API
 	private static Method method_getHMDPos_World;
 	private static Method method_getHMDMatrix_World;
-	private static Method method_getControllerMainPos_World;
-	private static Method method_getControllerOffhandPos_World;
+	private static Method method_getControllerPos_World;
 	private static Method method_getControllerMatrix_World;
 	private static Field field_vrPlayer;
 	// Old API
@@ -138,17 +137,10 @@ public class VivecraftReflector {
 	@SneakyThrows(Exception.class)
 	public static Vec3 getControllerPositon(int controller) {
 		if (newAPI) {
-			if (method_getControllerMainPos_World == null || method_getControllerOffhandPos_World == null) {
-				method_getControllerMainPos_World = Class.forName("com.mtbs3d.minecrift.api.IRoomscaleAdapter").getMethod("getControllerMainPos_World");
-				method_getControllerOffhandPos_World = Class.forName("com.mtbs3d.minecrift.api.IRoomscaleAdapter").getMethod("getControllerOffhandPos_World");
+			if (method_getControllerPos_World == null) {
+				method_getControllerPos_World = Class.forName("com.mtbs3d.minecrift.api.IRoomscaleAdapter").getMethod("getControllerPos_World", Integer.TYPE);
 			}
-			if (controller == 0) {
-				return (Vec3)method_getControllerMainPos_World.invoke(getVRPlayer());
-			} else if (controller == 1) {
-				return (Vec3)method_getControllerOffhandPos_World.invoke(getVRPlayer());
-			} else {
-				throw new IllegalArgumentException("Invalid controller ID: " + controller);
-			}
+			return (Vec3)method_getControllerPos_World.invoke(getVRPlayer(), controller);
 		} else {
 			if (method_getAimSource == null) {
 				method_getAimSource = Class.forName("com.mtbs3d.minecrift.api.IBodyAimController").getDeclaredMethod("getAimSource", Integer.TYPE);

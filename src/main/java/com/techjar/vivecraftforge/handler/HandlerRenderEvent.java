@@ -2,7 +2,9 @@ package com.techjar.vivecraftforge.handler;
 
 import org.lwjgl.opengl.GL11;
 
+import com.techjar.vivecraftforge.proxy.ProxyClient;
 import com.techjar.vivecraftforge.util.Util;
+import com.techjar.vivecraftforge.util.VRPlayerData;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -19,10 +21,11 @@ public class HandlerRenderEvent {
 	@SideOnly(Side.CLIENT)
 	public void onRenderPlayerPre(RenderPlayerEvent.Pre event) {
 		if (Util.isVRPlayer(event.entityPlayer)) {
+			VRPlayerData data = ProxyClient.vrPlayerIds.get(event.entityPlayer.getEntityId());
 			ModelBiped model = event.renderer.modelBipedMain;
 			model.bipedHead.showModel = false;
-			model.bipedLeftArm.showModel = false;
-			model.bipedRightArm.showModel = false;
+			model.bipedLeftArm.showModel = data.seated;
+			model.bipedRightArm.showModel = data.seated;
 			model.bipedHeadwear.showModel = false;
 			event.entityPlayer.ignoreFrustumCheck = true;
 		}
@@ -43,8 +46,9 @@ public class HandlerRenderEvent {
 	@SideOnly(Side.CLIENT)
 	public void onRenderPlayerSpecials(RenderPlayerEvent.Specials.Pre event) {
 		if (Util.isVRPlayer(event.entityPlayer)) {
+			VRPlayerData data = ProxyClient.vrPlayerIds.get(event.entityPlayer.getEntityId());
 			event.renderHelmet = false;
-			event.renderItem = false;
+			event.renderItem = data.seated;
 		}
 	}
 
@@ -56,6 +60,7 @@ public class HandlerRenderEvent {
 			Item item = event.stack.getItem();
 
 			if (item instanceof ItemArmor) {
+				VRPlayerData data = ProxyClient.vrPlayerIds.get(event.entityPlayer.getEntityId());
 				ItemArmor itemarmor = (ItemArmor)item;
 				((RenderPlayer)event.renderer).bindTexture(RenderBiped.getArmorResource(event.entityPlayer, event.stack, 3 - event.slot, null));
 				ModelBiped modelbiped = event.slot == 1 ? ((RenderPlayer)event.renderer).modelArmor : ((RenderPlayer)event.renderer).modelArmorChestplate;
@@ -69,8 +74,8 @@ public class HandlerRenderEvent {
 				modelbiped = net.minecraftforge.client.ForgeHooksClient.getArmorModel(event.entityPlayer, event.stack, 3 - event.slot, modelbiped);
 				modelbiped.bipedHead.showModel = false;
 				modelbiped.bipedHeadwear.showModel = false;
-				modelbiped.bipedRightArm.showModel = false;
-				modelbiped.bipedLeftArm.showModel = false;
+				modelbiped.bipedRightArm.showModel &= data.seated;
+				modelbiped.bipedLeftArm.showModel &= data.seated;
 				event.renderer.setRenderPassModel(modelbiped);
 				modelbiped.onGround = ((RenderPlayer)event.renderer).mainModel.onGround;
 				modelbiped.isRiding = ((RenderPlayer)event.renderer).mainModel.isRiding;

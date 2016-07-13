@@ -19,7 +19,9 @@ import cpw.mods.fml.common.FMLCommonHandler;
 
 public class ProxyClient extends ProxyCommon {
 	public static boolean isVFEServer;
+	public static boolean reverseHandsLast;
 	public static float worldScaleLast;
+	public static boolean seatedLast;
 	public static Map<Integer, VRPlayerData> vrPlayerIds = new HashMap<Integer, VRPlayerData>();
 
 	@Override

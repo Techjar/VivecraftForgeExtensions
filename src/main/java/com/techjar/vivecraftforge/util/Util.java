@@ -105,4 +105,13 @@ public class Util {
 		}
 		return 1;
 	}
+
+	@SideOnly(Side.CLIENT)
+	public static boolean getVRPlayerSeated(EntityPlayer entity) {
+		VRPlayerData data = ProxyClient.vrPlayerIds.get(entity.getEntityId());
+		if (data != null) {
+			return data.seated;
+		}
+		return false;
+	}
 }

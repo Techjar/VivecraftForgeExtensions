@@ -27,29 +27,27 @@ public class PacketVRData implements IPacket {
 	public int id;
 	public Vec3 position;
 	public float rotW, rotX, rotY, rotZ;
-	public boolean handsSwapped;
 
 	public PacketVRData() {
 	}
 
-	public PacketVRData(int id, Vec3 position, float rotW, float rotX, float rotY, float rotZ, boolean handsSwapped) {
+	public PacketVRData(int id, Vec3 position, float rotW, float rotX, float rotY, float rotZ) {
 		this.id = id;
 		this.position = position;
 		this.rotW = rotW;
 		this.rotX = rotX;
 		this.rotY = rotY;
 		this.rotZ = rotZ;
-		this.handsSwapped = handsSwapped;
 	}
 
 	@SideOnly(Side.CLIENT)
-	public PacketVRData(int id, Vec3 position, Quaternion quat, boolean handsSwapped) {
-		this(id, position, quat.w, quat.x, quat.y, quat.z, handsSwapped);
+	public PacketVRData(int id, Vec3 position, Quaternion quat) {
+		this(id, position, quat.w, quat.x, quat.y, quat.z);
 	}
 
 	@Override
 	public void encodePacket(ChannelHandlerContext context, ByteBuf buffer) {
-		buffer.writeByte(id | (handsSwapped ? 0x80 : 0));
+		buffer.writeByte(id);
 		buffer.writeFloat((float)position.xCoord);
 		buffer.writeFloat((float)position.yCoord);
 		buffer.writeFloat((float)position.zCoord);
@@ -61,9 +59,7 @@ public class PacketVRData implements IPacket {
 
 	@Override
 	public void decodePacket(ChannelHandlerContext context, ByteBuf buffer) {
-		int b = buffer.readUnsignedByte();
-		id = b & 0x7F;
-		handsSwapped = (b & 0x80) != 0;
+		id = buffer.readUnsignedByte();
 		position = Vec3.createVectorHelper(buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
 		rotW = buffer.readFloat();
 		rotX = buffer.readFloat();
@@ -78,8 +74,7 @@ public class PacketVRData implements IPacket {
 	@Override
 	public void handleServer(EntityPlayer player) {
 		VRPlayerData data = ProxyServer.vrPlayers.get(player);
-		if (data != null && data.entities.size() >= 3) {
-			data.handsSwapped = handsSwapped;
+		if (data != null && data.entities.size() > id) {
 			EntityVRObject entity = data.entities.get(id);
 			entity.setPosition(position.xCoord, position.yCoord, position.zCoord);
 			entity.position.xCoord = position.xCoord;
@@ -90,7 +85,7 @@ public class PacketVRData implements IPacket {
 			entity.rotY = rotY;
 			entity.rotZ = rotZ;
 			if (entity instanceof EntityVRArm) {
-				((EntityVRArm)entity).mirror = handsSwapped;
+				((EntityVRArm)entity).mirror = data.reverseHands;
 			}
 		}
 	}

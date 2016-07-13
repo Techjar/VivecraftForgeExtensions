@@ -20,24 +20,32 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.network.ByteBufUtils;
 
-public class PacketPlayerWorldScale implements IPacket {
+public class PacketVRSettings implements IPacket {
+	public boolean reverseHands;
 	public float scale;
+	public boolean seated;
 
-	public PacketPlayerWorldScale() {
+	public PacketVRSettings() {
 	}
 
-	public PacketPlayerWorldScale(float scale) {
+	public PacketVRSettings(boolean reverseHands, float scale, boolean seated) {
+		this.reverseHands = reverseHands;
 		this.scale = scale;
+		this.seated = seated;
 	}
 
 	@Override
 	public void encodePacket(ChannelHandlerContext context, ByteBuf buffer) {
+		buffer.writeBoolean(this.reverseHands);
 		buffer.writeFloat(this.scale);
+		buffer.writeBoolean(this.seated);
 	}
 
 	@Override
 	public void decodePacket(ChannelHandlerContext context, ByteBuf buffer) {
+		this.reverseHands = buffer.readBoolean();
 		this.scale = buffer.readFloat();
+		this.seated = buffer.readBoolean();
 	}
 
 	@Override
@@ -48,7 +56,9 @@ public class PacketPlayerWorldScale implements IPacket {
 	public void handleServer(EntityPlayer player) {
 		if (ProxyServer.vrPlayers.containsKey(player)) {
 			VRPlayerData data = ProxyServer.vrPlayers.get(player);
+			data.reverseHands = reverseHands;
 			data.worldScale = scale;
+			data.seated = seated;
 			VivecraftForge.packetPipeline.sendToAll(new PacketVRPlayerList(ProxyServer.vrPlayers));
 		}
 	}

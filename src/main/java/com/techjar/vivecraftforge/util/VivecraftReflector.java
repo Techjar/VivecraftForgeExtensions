@@ -40,6 +40,8 @@ public class VivecraftReflector {
 	private static Field field_vrSettings;
 	private static Field field_vrReverseHands;
 	private static Field field_vrWorldScale;
+	private static Field field_seated;
+	private static boolean field_seated_exists = true;
 	private static boolean installed;
 	private static boolean newAPI;
 	static {
@@ -85,6 +87,20 @@ public class VivecraftReflector {
 			field_vrWorldScale = Class.forName("com.mtbs3d.minecrift.settings.VRSettings").getDeclaredField("vrWorldScale");
 		}
 		return field_vrWorldScale.getFloat(getVRSettings());
+	}
+
+	@SneakyThrows(Exception.class)
+	public static boolean getSeated() {
+		if (!field_seated_exists) return false;
+		if (field_seated == null) {
+			try {
+				field_seated = Class.forName("com.mtbs3d.minecrift.settings.VRSettings").getDeclaredField("seated");
+			} catch (NoSuchFieldException ex) {
+				field_seated_exists = false;
+				return false;
+			}
+		}
+		return field_seated.getBoolean(getVRSettings());
 	}
 
 	@SneakyThrows(Exception.class)

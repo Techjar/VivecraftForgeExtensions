@@ -32,7 +32,7 @@ public class HandlerServerTick {
 					continue;
 				}
 				VRPlayerData data = entry.getValue();
-				if (data.entities.size() != 3) {
+				if (data.entities.size() != (data.seated ? 1 : 3)) {
 					createEntities(player, data);
 				} else {
 					for (EntityVRObject entity : data.entities) {
@@ -58,11 +58,13 @@ public class HandlerServerTick {
 		data.entities.clear();
 		data.entityIds.clear();
 		data.entities.add(new EntityVRHead(player.worldObj, player.getEntityId()));
-		data.entities.add(new EntityVRMainArm(player.worldObj, player.getEntityId()));
-		data.entities.add(new EntityVROffHandArm(player.worldObj, player.getEntityId()));
 		data.entityIds.add(data.entities.get(0).getEntityId());
-		data.entityIds.add(data.entities.get(1).getEntityId());
-		data.entityIds.add(data.entities.get(2).getEntityId());
+		if (!data.seated) {
+			data.entities.add(new EntityVRMainArm(player.worldObj, player.getEntityId()));
+			data.entityIds.add(data.entities.get(1).getEntityId());
+			data.entities.add(new EntityVROffHandArm(player.worldObj, player.getEntityId()));
+			data.entityIds.add(data.entities.get(2).getEntityId());
+		}
 		VivecraftForge.packetPipeline.sendToAll(new PacketVRPlayerList(ProxyServer.vrPlayers));
 	}
 }

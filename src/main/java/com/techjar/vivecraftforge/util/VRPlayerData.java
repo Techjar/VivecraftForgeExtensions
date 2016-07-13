@@ -11,18 +11,17 @@ public class VRPlayerData {
 	 */
 	public List<EntityVRObject> entities = new ArrayList<EntityVRObject>();
 	public List<Integer> entityIds = new ArrayList<Integer>();
-	/**
-	 * Not guaranteed to be up-to-date on client, don't rely on it there
-	 */
-	public boolean handsSwapped;
 	public boolean newAPI;
+	public boolean reverseHands;
 	public float worldScale = 1;
+	public boolean seated;
 	
 	public VRPlayerData copy() {
 		VRPlayerData data = new VRPlayerData();
-		data.handsSwapped = handsSwapped;
-		data.worldScale = worldScale;
 		data.newAPI = newAPI;
+		data.reverseHands = reverseHands;
+		data.worldScale = worldScale;
+		data.seated = seated;
 		data.entities = new ArrayList<EntityVRObject>(entities);
 		data.entityIds = new ArrayList<Integer>(entityIds);
 		return data;

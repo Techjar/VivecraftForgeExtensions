@@ -114,4 +114,12 @@ public class Util {
 		}
 		return false;
 	}
+	
+	public static boolean getVRPlayerSeatedServer(EntityPlayer entity) {
+		VRPlayerData data = ProxyServer.vrPlayers.get(entity);
+		if (data != null) {
+			return data.seated;
+		}
+		return false;
+	}
 }

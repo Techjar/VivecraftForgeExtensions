@@ -31,7 +31,7 @@ public class ASMDelegator {
 	
 	public static double creeperSwellDistance(double originalValue, EntityLivingBase entity) {
 		if (entity == null || !(entity instanceof EntityPlayer)) return originalValue;
-		if (Util.isVRPlayerServer((EntityPlayer)entity)) return 1.75D * 1.75D;
+		if (Util.isVRPlayerServer((EntityPlayer)entity) && !Util.getVRPlayerSeated((EntityPlayer)entity)) return 1.75D * 1.75D;
 		return originalValue;
 	}
 }

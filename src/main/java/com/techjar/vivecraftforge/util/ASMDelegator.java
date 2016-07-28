@@ -1,6 +1,7 @@
 package com.techjar.vivecraftforge.util;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 
 import org.lwjgl.opengl.GL11;
@@ -26,5 +27,11 @@ public class ASMDelegator {
 	
 	public static double playerBlockReachDistance(EntityPlayer player, double originalValue) {
 		return originalValue < 256 && Util.isVRPlayerServer(player) ? 256 : originalValue;
+	}
+	
+	public static double creeperSwellDistance(double originalValue, EntityLivingBase entity) {
+		if (entity == null || !(entity instanceof EntityPlayer)) return originalValue;
+		if (Util.isVRPlayerServer((EntityPlayer)entity)) return 1.75D * 1.75D;
+		return originalValue;
 	}
 }

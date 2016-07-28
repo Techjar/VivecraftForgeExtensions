@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.config.Configuration;
 
 import com.techjar.vivecraftforge.entity.EntityVRObject;
 import com.techjar.vivecraftforge.network.ViveMessage;
@@ -40,7 +41,10 @@ public class VivecraftForge {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		// Stub Method
+		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+		config.load();
+		Config.vrCreeperSwellDistance = config.get(Configuration.CATEGORY_GENERAL, "vrCreeperSwellDistance", 1.75, "Distance at which creepers swell and explode for VR players. Default: 1.75").getDouble(1.75D);
+		if (config.hasChanged()) config.save();
 	}
 
 	@EventHandler

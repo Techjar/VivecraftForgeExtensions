@@ -1,5 +1,6 @@
 package com.techjar.vivecraftforge.core.asm.handler;
 
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.LdcInsnNode;
@@ -7,9 +8,9 @@ import org.objectweb.asm.tree.MethodNode;
 
 import com.techjar.vivecraftforge.core.asm.ASMClassHandler;
 import com.techjar.vivecraftforge.core.asm.ASMMethodHandler;
+import com.techjar.vivecraftforge.core.asm.ASMUtil;
 import com.techjar.vivecraftforge.core.asm.ClassTuple;
 import com.techjar.vivecraftforge.core.asm.MethodTuple;
-import com.techjar.vivecraftforge.util.Util;
 import com.techjar.vivecraftforge.util.VivecraftForgeLog;
 
 public class ASMHandlerHackForgeChannelName extends ASMClassHandler {
@@ -36,21 +37,13 @@ public class ASMHandlerHackForgeChannelName extends ASMClassHandler {
 
 		@Override
 		public void patchMethod(MethodNode methodNode, ClassNode classNode, boolean obfuscated) {
-			for (int i = 0; i < methodNode.instructions.size(); i++) {
-				AbstractInsnNode insn = methodNode.instructions.get(i);
-				if (insn instanceof LdcInsnNode) {
-					LdcInsnNode insn2 = (LdcInsnNode)insn;
-					if (insn2.cst.getClass() == String.class && insn2.cst.equals("MC|")) {
-						int found = i - 1;
-						VivecraftForgeLog.debug("Found desired instruction node: " + insn2.getClass().getSimpleName() + " " + insn2.cst);
-						for (int j = 0; j < 4; j++) {
-							AbstractInsnNode insn3 = methodNode.instructions.get(found);
-							methodNode.instructions.remove(insn3);
-							VivecraftForgeLog.debug("Removed instruction: " + insn3.getClass().getSimpleName());
-						}
-						break;
-					}
-				}
+			LdcInsnNode removeInsn = (LdcInsnNode)ASMUtil.findFirstInstruction(methodNode, Opcodes.LDC, "MC|");
+			VivecraftForgeLog.debug("Found desired instruction node: " + removeInsn.getClass().getSimpleName() + " " + removeInsn.cst);
+			int remove = methodNode.instructions.indexOf(removeInsn) - 1;
+			for (int j = 0; j < 4; j++) {
+				AbstractInsnNode insn = methodNode.instructions.get(remove);
+				methodNode.instructions.remove(insn);
+				VivecraftForgeLog.debug("Removed instruction: " + insn.getClass().getSimpleName());
 			}
 		}
 	}

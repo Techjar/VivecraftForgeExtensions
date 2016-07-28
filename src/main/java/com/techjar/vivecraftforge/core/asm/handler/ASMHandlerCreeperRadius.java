@@ -2,8 +2,11 @@ package com.techjar.vivecraftforge.core.asm.handler;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.LdcInsnNode;
+import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.VarInsnNode;
 
 import com.techjar.vivecraftforge.core.asm.ASMClassHandler;
 import com.techjar.vivecraftforge.core.asm.ASMMethodHandler;
@@ -12,10 +15,13 @@ import com.techjar.vivecraftforge.core.asm.ClassTuple;
 import com.techjar.vivecraftforge.core.asm.MethodTuple;
 import com.techjar.vivecraftforge.util.VivecraftForgeLog;
 
-public class ASMHandlerEnableTeleporting extends ASMClassHandler {
+import cpw.mods.fml.relauncher.FMLLaunchHandler;
+import cpw.mods.fml.relauncher.Side;
+
+public class ASMHandlerCreeperRadius extends ASMClassHandler {
 	@Override
 	public ClassTuple getDesiredClass() {
-		return new ClassTuple("net.minecraft.network.NetHandlerPlayServer", "nh");
+		return new ClassTuple("net.minecraft.entity.ai.EntityAICreeperSwell", "vi");
 	}
 
 	@Override
@@ -27,21 +33,26 @@ public class ASMHandlerEnableTeleporting extends ASMClassHandler {
 	public boolean getComputeFrames() {
 		return false;
 	}
+	
+	@Override
+	public boolean shouldPatchClass() {
+		return FMLLaunchHandler.side() != Side.CLIENT;
+	}
 
 	public static class MethodHandler implements ASMMethodHandler {
 		@Override
 		public MethodTuple getDesiredMethod() {
-			return new MethodTuple("processPlayer", "(Lnet/minecraft/network/play/client/C03PacketPlayer;)V", "a", "(Ljd;)V");
+			return new MethodTuple("shouldExecute", "()Z", "a", "()Z");
 		}
 
 		@Override
 		public void patchMethod(MethodNode methodNode, ClassNode classNode, boolean obfuscated) {
-			LdcInsnNode ldc1 = (LdcInsnNode)ASMUtil.findFirstInstruction(methodNode, Opcodes.LDC, 100D);
-			VivecraftForgeLog.debug("Changing double constant " + ldc1.cst + " to 10000");
-			ldc1.cst = 10000D;
-			LdcInsnNode ldc2 = (LdcInsnNode)ASMUtil.findFirstInstruction(methodNode, Opcodes.LDC, 0.0625D);
-			VivecraftForgeLog.debug("Changing double constant " + ldc2.cst + " to 10000");
-			ldc2.cst = 10000D;
+			LdcInsnNode insn = (LdcInsnNode)ASMUtil.findLastOpcode(methodNode, Opcodes.LDC);
+			InsnList insnList = new InsnList();
+			insnList.add(new VarInsnNode(Opcodes.ALOAD, 1));
+			insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/techjar/vivecraftforge/util/ASMDelegator", "creeperSwellDistance", obfuscated ? "(DLsv;)D" : "(DLnet/minecraft/entity/EntityLivingBase;)D", false));
+			methodNode.instructions.insert(insn, insnList);
+			VivecraftForgeLog.debug("Inserted delegate method call.");
 		}
 	}
 }

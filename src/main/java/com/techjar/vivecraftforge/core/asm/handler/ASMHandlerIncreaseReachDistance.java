@@ -5,19 +5,16 @@ import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.InsnList;
-import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
 import com.techjar.vivecraftforge.core.asm.ASMClassHandler;
 import com.techjar.vivecraftforge.core.asm.ASMMethodHandler;
+import com.techjar.vivecraftforge.core.asm.ASMUtil;
 import com.techjar.vivecraftforge.core.asm.ClassTuple;
 import com.techjar.vivecraftforge.core.asm.MethodTuple;
-import com.techjar.vivecraftforge.util.Util;
 import com.techjar.vivecraftforge.util.VivecraftForgeLog;
-
-import cpw.mods.fml.common.FMLCommonHandler;
 
 public class ASMHandlerIncreaseReachDistance extends ASMClassHandler {
 	@Override
@@ -43,23 +40,15 @@ public class ASMHandlerIncreaseReachDistance extends ASMClassHandler {
 
 		@Override
 		public void patchMethod(MethodNode methodNode, ClassNode classNode, boolean obfuscated) {
-			for (int i = 0; i < methodNode.instructions.size(); i++) {
-				AbstractInsnNode insn = methodNode.instructions.get(i);
-				if (insn instanceof VarInsnNode) {
-					VarInsnNode insn2 = (VarInsnNode)insn;
-					if (insn2.getOpcode() == Opcodes.DSTORE && insn2.var == 10) {
-						InsnList insnList = new InsnList();
-						insnList.add(new VarInsnNode(Opcodes.ALOAD, 0));
-						insnList.add(new FieldInsnNode(Opcodes.GETFIELD, obfuscated ? "nh" : "net/minecraft/network/NetHandlerPlayServer", obfuscated ? "b" : "playerEntity", obfuscated ? "Lmw;" : "Lnet/minecraft/entity/player/EntityPlayerMP;"));
-						insnList.add(new VarInsnNode(Opcodes.DLOAD, 10));
-						insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/techjar/vivecraftforge/util/ASMDelegator", "playerBlockReachDistance", obfuscated ? "(Lyz;D)D" : "(Lnet/minecraft/entity/player/EntityPlayer;D)D", false));
-						insnList.add(new VarInsnNode(Opcodes.DSTORE, 10));
-						methodNode.instructions.insert(insn2, insnList);
-						VivecraftForgeLog.debug("Inserted delegate method call.");
-						break;
-					}
-				}
-			}
+			AbstractInsnNode insert = ASMUtil.findFirstInstruction(methodNode, Opcodes.DSTORE, 10);
+			InsnList insnList = new InsnList();
+			insnList.add(new VarInsnNode(Opcodes.ALOAD, 0));
+			insnList.add(new FieldInsnNode(Opcodes.GETFIELD, obfuscated ? "nh" : "net/minecraft/network/NetHandlerPlayServer", obfuscated ? "b" : "playerEntity", obfuscated ? "Lmw;" : "Lnet/minecraft/entity/player/EntityPlayerMP;"));
+			insnList.add(new VarInsnNode(Opcodes.DLOAD, 10));
+			insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/techjar/vivecraftforge/util/ASMDelegator", "playerBlockReachDistance", obfuscated ? "(Lyz;D)D" : "(Lnet/minecraft/entity/player/EntityPlayer;D)D", false));
+			insnList.add(new VarInsnNode(Opcodes.DSTORE, 10));
+			methodNode.instructions.insert(insert, insnList);
+			VivecraftForgeLog.debug("Inserted delegate method call.");
 		}
 	}
 	
@@ -71,23 +60,15 @@ public class ASMHandlerIncreaseReachDistance extends ASMClassHandler {
 
 		@Override
 		public void patchMethod(MethodNode methodNode, ClassNode classNode, boolean obfuscated) {
-			for (int i = 0; i < methodNode.instructions.size(); i++) {
-				AbstractInsnNode insn = methodNode.instructions.get(i);
-				if (insn instanceof VarInsnNode) {
-					VarInsnNode insn2 = (VarInsnNode)insn;
-					if (insn2.getOpcode() == Opcodes.DSTORE && insn2.var == 15) {
-						InsnList insnList = new InsnList();
-						insnList.add(new VarInsnNode(Opcodes.ALOAD, 0));
-						insnList.add(new FieldInsnNode(Opcodes.GETFIELD, obfuscated ? "nh" : "net/minecraft/network/NetHandlerPlayServer", obfuscated ? "b" : "playerEntity", obfuscated ? "Lmw;" : "Lnet/minecraft/entity/player/EntityPlayerMP;"));
-						insnList.add(new VarInsnNode(Opcodes.DLOAD, 15));
-						insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/techjar/vivecraftforge/util/ASMDelegator", "playerBlockReachDistance", obfuscated ? "(Lyz;D)D" : "(Lnet/minecraft/entity/player/EntityPlayer;D)D", false));
-						insnList.add(new VarInsnNode(Opcodes.DSTORE, 15));
-						methodNode.instructions.insert(insn2, insnList);
-						VivecraftForgeLog.debug("Inserted delegate method call.");
-						break;
-					}
-				}
-			}
+			AbstractInsnNode insert = ASMUtil.findFirstInstruction(methodNode, Opcodes.DSTORE, 15);
+			InsnList insnList = new InsnList();
+			insnList.add(new VarInsnNode(Opcodes.ALOAD, 0));
+			insnList.add(new FieldInsnNode(Opcodes.GETFIELD, obfuscated ? "nh" : "net/minecraft/network/NetHandlerPlayServer", obfuscated ? "b" : "playerEntity", obfuscated ? "Lmw;" : "Lnet/minecraft/entity/player/EntityPlayerMP;"));
+			insnList.add(new VarInsnNode(Opcodes.DLOAD, 15));
+			insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/techjar/vivecraftforge/util/ASMDelegator", "playerBlockReachDistance", obfuscated ? "(Lyz;D)D" : "(Lnet/minecraft/entity/player/EntityPlayer;D)D", false));
+			insnList.add(new VarInsnNode(Opcodes.DSTORE, 15));
+			methodNode.instructions.insert(insert, insnList);
+			VivecraftForgeLog.debug("Inserted delegate method call.");
 		}
 	}
 	
@@ -99,31 +80,25 @@ public class ASMHandlerIncreaseReachDistance extends ASMClassHandler {
 
 		@Override
 		public void patchMethod(MethodNode methodNode, ClassNode classNode, boolean obfuscated) {
-			boolean insertedDelegate = false;
-			for (int i = 0; i < methodNode.instructions.size(); i++) {
-				AbstractInsnNode insn = methodNode.instructions.get(i);
-				if (!insertedDelegate && insn instanceof VarInsnNode) {
-					VarInsnNode insn2 = (VarInsnNode)insn;
-					if (insn2.getOpcode() == Opcodes.DSTORE && insn2.var == 5) {
-						InsnList insnList = new InsnList();
-						insnList.add(new VarInsnNode(Opcodes.ALOAD, 0));
-						insnList.add(new FieldInsnNode(Opcodes.GETFIELD, obfuscated ? "nh" : "net/minecraft/network/NetHandlerPlayServer", obfuscated ? "b" : "playerEntity", obfuscated ? "Lmw;" : "Lnet/minecraft/entity/player/EntityPlayerMP;"));
-						insnList.add(new VarInsnNode(Opcodes.DLOAD, 5));
-						insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/techjar/vivecraftforge/util/ASMDelegator", "playerEntityReachDistance", obfuscated ? "(Lyz;D)D" : "(Lnet/minecraft/entity/player/EntityPlayer;D)D", false));
-						insnList.add(new VarInsnNode(Opcodes.DSTORE, 5));
-						methodNode.instructions.insert(insn2, insnList);
-						insertedDelegate = true;
-						VivecraftForgeLog.debug("Inserted delegate method call.");
-					}
-				} else if (insn instanceof LdcInsnNode) {
-					LdcInsnNode insn2 = (LdcInsnNode)insn;
-					if (insn2.cst.getClass() == Double.class && insn2.cst.equals(new Double("9.0"))) {
-						methodNode.instructions.remove(insn2);
-						methodNode.instructions.remove(methodNode.instructions.get(i));
-						VivecraftForgeLog.debug("Removed variable assignment.");
-						break;
-					}
+			AbstractInsnNode insert = ASMUtil.findFirstInstruction(methodNode, Opcodes.DSTORE, 5);
+			InsnList insnList = new InsnList();
+			insnList.add(new VarInsnNode(Opcodes.ALOAD, 0));
+			insnList.add(new FieldInsnNode(Opcodes.GETFIELD, obfuscated ? "nh" : "net/minecraft/network/NetHandlerPlayServer", obfuscated ? "b" : "playerEntity", obfuscated ? "Lmw;" : "Lnet/minecraft/entity/player/EntityPlayerMP;"));
+			insnList.add(new VarInsnNode(Opcodes.DLOAD, 5));
+			insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/techjar/vivecraftforge/util/ASMDelegator", "playerEntityReachDistance", obfuscated ? "(Lyz;D)D" : "(Lnet/minecraft/entity/player/EntityPlayer;D)D", false));
+			insnList.add(new VarInsnNode(Opcodes.DSTORE, 5));
+			methodNode.instructions.insert(insert, insnList);
+			VivecraftForgeLog.debug("Inserted delegate method call.");
+			
+			AbstractInsnNode removeInsn = ASMUtil.findFirstInstruction(methodNode, Opcodes.LDC, 9.0D);
+			if (removeInsn != null) {
+				int remove = methodNode.instructions.indexOf(removeInsn);
+				for (int i = 0; i < 2; i++) {
+					methodNode.instructions.remove(methodNode.instructions.get(remove));
 				}
+				VivecraftForgeLog.debug("Removed variable assignment.");
+			} else {
+				VivecraftForgeLog.debug("Variable assignment not found.");
 			}
 		}
 	}

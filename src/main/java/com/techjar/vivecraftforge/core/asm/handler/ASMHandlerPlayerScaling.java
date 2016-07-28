@@ -10,6 +10,7 @@ import org.objectweb.asm.tree.VarInsnNode;
 
 import com.techjar.vivecraftforge.core.asm.ASMClassHandler;
 import com.techjar.vivecraftforge.core.asm.ASMMethodHandler;
+import com.techjar.vivecraftforge.core.asm.ASMUtil;
 import com.techjar.vivecraftforge.core.asm.ClassTuple;
 import com.techjar.vivecraftforge.core.asm.MethodTuple;
 import com.techjar.vivecraftforge.util.VivecraftForgeLog;
@@ -38,20 +39,12 @@ public class ASMHandlerPlayerScaling extends ASMClassHandler {
 
 		@Override
 		public void patchMethod(MethodNode methodNode, ClassNode classNode, boolean obfuscated) {
-			for (int i = 0; i < methodNode.instructions.size(); i++) {
-				AbstractInsnNode insn = methodNode.instructions.get(i);
-				if (insn instanceof MethodInsnNode) {
-					MethodInsnNode insn2 = (MethodInsnNode)insn;
-					if (insn2.owner.equals("org/lwjgl/opengl/GL11") && insn2.name.equals("glScalef")) {
-						InsnList insnList = new InsnList();
-						insnList.add(new VarInsnNode(Opcodes.ALOAD, 1));
-						insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/techjar/vivecraftforge/util/ASMDelegator", "scalePlayer", "(Lnet/minecraft/entity/Entity;)V", false));
-						methodNode.instructions.insert(insn2, insnList);
-						VivecraftForgeLog.debug("Inserted delegate method call.");
-						break;
-					}
-				}
-			}
+			AbstractInsnNode insert = ASMUtil.findFirstInstruction(methodNode, Opcodes.INVOKESTATIC, "org/lwjgl/opengl/GL11", "glScalef", "(FFF)V", false);
+			InsnList insnList = new InsnList();
+			insnList.add(new VarInsnNode(Opcodes.ALOAD, 1));
+			insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/techjar/vivecraftforge/util/ASMDelegator", "scalePlayer", obfuscated ? "(Lsa;)V" : "(Lnet/minecraft/entity/Entity;)V", false));
+			methodNode.instructions.insert(insert, insnList);
+			VivecraftForgeLog.debug("Inserted delegate method call.");
 		}
 	}
 }

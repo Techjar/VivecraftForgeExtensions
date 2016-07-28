@@ -18,6 +18,7 @@ public class ClassTransformer implements IClassTransformer {
 		asmHandlers.add(new ASMHandlerHackForgeChannelName());
 		asmHandlers.add(new ASMHandlerPlayerScaling());
 		asmHandlers.add(new ASMHandlerIncreaseReachDistance());
+		asmHandlers.add(new ASMHandlerCreeperRadius());
 	}
 	
 	@Override

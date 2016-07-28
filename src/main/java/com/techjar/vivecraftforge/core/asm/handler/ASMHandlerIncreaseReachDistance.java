@@ -41,6 +41,7 @@ public class ASMHandlerIncreaseReachDistance extends ASMClassHandler {
 		@Override
 		public void patchMethod(MethodNode methodNode, ClassNode classNode, boolean obfuscated) {
 			AbstractInsnNode insert = ASMUtil.findFirstInstruction(methodNode, Opcodes.DSTORE, 10);
+			if (insert == null) return;
 			InsnList insnList = new InsnList();
 			insnList.add(new VarInsnNode(Opcodes.ALOAD, 0));
 			insnList.add(new FieldInsnNode(Opcodes.GETFIELD, obfuscated ? "nh" : "net/minecraft/network/NetHandlerPlayServer", obfuscated ? "b" : "playerEntity", obfuscated ? "Lmw;" : "Lnet/minecraft/entity/player/EntityPlayerMP;"));
@@ -61,6 +62,7 @@ public class ASMHandlerIncreaseReachDistance extends ASMClassHandler {
 		@Override
 		public void patchMethod(MethodNode methodNode, ClassNode classNode, boolean obfuscated) {
 			AbstractInsnNode insert = ASMUtil.findFirstInstruction(methodNode, Opcodes.DSTORE, 15);
+			if (insert == null) return;
 			InsnList insnList = new InsnList();
 			insnList.add(new VarInsnNode(Opcodes.ALOAD, 0));
 			insnList.add(new FieldInsnNode(Opcodes.GETFIELD, obfuscated ? "nh" : "net/minecraft/network/NetHandlerPlayServer", obfuscated ? "b" : "playerEntity", obfuscated ? "Lmw;" : "Lnet/minecraft/entity/player/EntityPlayerMP;"));
@@ -81,6 +83,7 @@ public class ASMHandlerIncreaseReachDistance extends ASMClassHandler {
 		@Override
 		public void patchMethod(MethodNode methodNode, ClassNode classNode, boolean obfuscated) {
 			AbstractInsnNode insert = ASMUtil.findFirstInstruction(methodNode, Opcodes.DSTORE, 5);
+			if (insert == null) return;
 			InsnList insnList = new InsnList();
 			insnList.add(new VarInsnNode(Opcodes.ALOAD, 0));
 			insnList.add(new FieldInsnNode(Opcodes.GETFIELD, obfuscated ? "nh" : "net/minecraft/network/NetHandlerPlayServer", obfuscated ? "b" : "playerEntity", obfuscated ? "Lmw;" : "Lnet/minecraft/entity/player/EntityPlayerMP;"));

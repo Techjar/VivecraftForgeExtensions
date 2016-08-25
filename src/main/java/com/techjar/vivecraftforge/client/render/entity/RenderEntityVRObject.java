@@ -88,7 +88,7 @@ public abstract class RenderEntityVRObject extends Render {
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glPushMatrix();
 		float modelScale = 1F / 16F;
-		float scale = Util.getVRPlayerScale(entityVR.getEntityPlayer());
+		float scale = ProxyClient.getVRPlayerScale(entityVR.getEntityPlayer());
 		Matrix4f matrix = new Matrix4f();
 		matrix.translate(Util.convertVector(position));
 		if (entity instanceof EntityVRHead) {

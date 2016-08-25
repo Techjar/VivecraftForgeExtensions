@@ -29,4 +29,16 @@ public class ProxyServer extends ProxyCommon {
 		VivecraftForge.networkVersion.registerMessage(ViveMessage.Handle.class, ViveMessage.class, 86, Side.SERVER);
 		VivecraftForge.networkLegacy.registerMessage(ViveMessage.Handle.class, ViveMessage.class, 112, Side.SERVER);
 	}
+
+	public static boolean isVRPlayer(EntityPlayer entity) {
+		return ProxyServer.vrPlayers.containsKey(entity);
+	}
+	
+	public static boolean getVRPlayerSeated(EntityPlayer entity) {
+		VRPlayerData data = ProxyServer.vrPlayers.get(entity);
+		if (data != null) {
+			return data.seated;
+		}
+		return false;
+	}
 }

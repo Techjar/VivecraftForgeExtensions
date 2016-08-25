@@ -20,7 +20,7 @@ public class HandlerRenderEvent {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void onRenderPlayerPre(RenderPlayerEvent.Pre event) {
-		if (Util.isVRPlayer(event.entityPlayer)) {
+		if (ProxyClient.isVRPlayer(event.entityPlayer)) {
 			VRPlayerData data = ProxyClient.vrPlayerIds.get(event.entityPlayer.getEntityId());
 			ModelBiped model = event.renderer.modelBipedMain;
 			model.bipedHead.showModel = false;
@@ -33,7 +33,7 @@ public class HandlerRenderEvent {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void onRenderPlayerPost(RenderPlayerEvent.Post event) {
-		if (Util.isVRPlayer(event.entityPlayer)) {
+		if (ProxyClient.isVRPlayer(event.entityPlayer)) {
 			ModelBiped model = event.renderer.modelBipedMain;
 			model.bipedHead.showModel = true;
 			model.bipedLeftArm.showModel = true;
@@ -45,7 +45,7 @@ public class HandlerRenderEvent {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void onRenderPlayerSpecials(RenderPlayerEvent.Specials.Pre event) {
-		if (Util.isVRPlayer(event.entityPlayer)) {
+		if (ProxyClient.isVRPlayer(event.entityPlayer)) {
 			VRPlayerData data = ProxyClient.vrPlayerIds.get(event.entityPlayer.getEntityId());
 			event.renderHelmet = false;
 			event.renderItem = data.seated;
@@ -55,7 +55,7 @@ public class HandlerRenderEvent {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void onRenderPlayerSetArmorModel(RenderPlayerEvent.SetArmorModel event) {
-		if (!Util.isVRPlayer(event.entityPlayer)) return;
+		if (!ProxyClient.isVRPlayer(event.entityPlayer)) return;
 		if (event.stack != null) {
 			Item item = event.stack.getItem();
 

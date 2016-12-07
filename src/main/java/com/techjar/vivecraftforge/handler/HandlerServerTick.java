@@ -5,14 +5,17 @@ import java.util.Map;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.Vec3;
 
 import com.techjar.vivecraftforge.VivecraftForge;
+import com.techjar.vivecraftforge.entity.EntityVRArm;
 import com.techjar.vivecraftforge.entity.EntityVRHead;
 import com.techjar.vivecraftforge.entity.EntityVRMainArm;
 import com.techjar.vivecraftforge.entity.EntityVRObject;
 import com.techjar.vivecraftforge.entity.EntityVROffHandArm;
 import com.techjar.vivecraftforge.network.packet.PacketVRPlayerList;
 import com.techjar.vivecraftforge.proxy.ProxyServer;
+import com.techjar.vivecraftforge.util.ServerQuaternion;
 import com.techjar.vivecraftforge.util.VRPlayerData;
 import com.techjar.vivecraftforge.util.VivecraftForgeLog;
 
@@ -21,6 +24,8 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class HandlerServerTick {
+	EntityVRArm arm;
+
 	@SubscribeEvent
 	public void onServerTick(ServerTickEvent event) {
 		if (event.phase == Phase.START) {
@@ -49,7 +54,7 @@ public class HandlerServerTick {
 			}
 		}
 	}
-	
+
 	private void createEntities(EntityPlayer player, VRPlayerData data) {
 		VivecraftForgeLog.debug("Creating new entities for %s", player);
 		for (Entity entity : data.entities) {

@@ -19,8 +19,9 @@ public class ClassTransformer implements IClassTransformer {
 		asmHandlers.add(new ASMHandlerPlayerScaling());
 		asmHandlers.add(new ASMHandlerIncreaseReachDistance());
 		asmHandlers.add(new ASMHandlerCreeperRadius());
+		asmHandlers.add(new ASMHandlerEndermanLook());
 	}
-	
+
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] bytes) {
 		for (ASMClassHandler handler : asmHandlers) {

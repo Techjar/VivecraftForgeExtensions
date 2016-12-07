@@ -136,7 +136,6 @@ public class VivecraftReflector {
 			buffer.rewind();
 			Matrix4f matrix = new Matrix4f();
 			matrix.load(buffer);
-			matrix.transpose();
 			return matrix;
 		} else {
 			if (field_hmdPose == null) {
@@ -178,6 +177,7 @@ public class VivecraftReflector {
 			buffer.rewind();
 			Matrix4f matrix = new Matrix4f();
 			matrix.load(buffer);
+			matrix.transpose();
 			return matrix;
 		} else {
 			if (method_getAimRotation == null) {

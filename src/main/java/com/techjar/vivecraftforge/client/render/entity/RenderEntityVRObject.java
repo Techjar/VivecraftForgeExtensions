@@ -54,12 +54,12 @@ public abstract class RenderEntityVRObject extends Render {
 	protected ModelBiped modelArmor;
     protected ModelBiped modelArmorChestplate;
 	protected int armorSlot;
-	
+
 	public RenderEntityVRObject() {
 		modelArmorChestplate = new ModelBiped(1.0F);
 		modelArmor = new ModelBiped(0.5F);
 	}
-	
+
 	/**
 	 * lol coords are not used here so don't even try
 	 */
@@ -72,8 +72,9 @@ public abstract class RenderEntityVRObject extends Render {
 		Vector3 position = Vector3.lerp(Util.convertVector(entityVR.positionLast), Util.convertVector(entityVR.position), Minecraft.getMinecraft().timer.renderPartialTicks).subtract(new Vector3((float)RenderManager.renderPosX, (float)RenderManager.renderPosY, (float)RenderManager.renderPosZ));
 		Quaternion quat = Util.quatLerp(entityVR.getRotationLast(), entityVR.getRotation(), Minecraft.getMinecraft().timer.renderPartialTicks).normalized();
 		Matrix4f quatMatrix = quat.getMatrix();
+		quatMatrix = Matrix4f.transpose(quatMatrix, null);
 		Matrix4f rotation = new Matrix4f();
-		
+
 		// Don't ask about all this nonsense, found it by experimentation
 		if (!data.newAPI) rotation.rotate((float)Math.PI, new Vector3f(0, -1, 0));
 		Matrix4f.mul(rotation, quatMatrix, rotation);
@@ -82,7 +83,7 @@ public abstract class RenderEntityVRObject extends Render {
 			rotation.rotate((float)Math.PI, new Vector3f(0, -1, 0));
 		}
 		if (entity instanceof EntityVRHead) rotation.rotate((float)Math.PI, new Vector3f(0, 0, -1));
-		
+
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glDisable(GL11.GL_CULL_FACE);
@@ -368,7 +369,7 @@ public abstract class RenderEntityVRObject extends Render {
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glEnable(GL11.GL_CULL_FACE);
 	}
-	
+
 	public abstract Vector3 getArmorModelOffset(EntityVRObject entity);
 	public abstract void renderArmorModel(EntityVRObject entity, ModelBiped modelBiped, float scale);
 	public void preRenderModel(EntityVRObject entity) {

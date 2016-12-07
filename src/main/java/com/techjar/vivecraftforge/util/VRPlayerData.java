@@ -9,13 +9,13 @@ public class VRPlayerData {
 	/**
 	 * Only on server
 	 */
-	public List<EntityVRObject> entities = new ArrayList<EntityVRObject>();
-	public List<Integer> entityIds = new ArrayList<Integer>();
+	public List<EntityVRObject> entities = new ArrayList<EntityVRObject>(3);
+	public List<Integer> entityIds = new ArrayList<Integer>(3);
 	public boolean newAPI;
 	public boolean reverseHands;
 	public float worldScale = 1;
 	public boolean seated;
-	
+
 	public VRPlayerData copy() {
 		VRPlayerData data = new VRPlayerData();
 		data.newAPI = newAPI;

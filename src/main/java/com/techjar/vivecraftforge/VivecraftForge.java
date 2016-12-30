@@ -24,7 +24,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(modid = "VivecraftForge", name = "Vivecraft Forge Extensions", version = "@VERSION@", dependencies = "required-after:Forge@[10.13.4.1614,)", acceptableRemoteVersions = "@RAW_VERSION@.*")
+@Mod(modid = "VivecraftForge", name = "Vivecraft Forge Extensions", version = "@VERSION@", dependencies = "required-after:Forge@[10.13.4.1558,)", acceptableRemoteVersions = "@RAW_VERSION@.*")
 public class VivecraftForge {
 	@Instance("VivecraftForge")
 	public static VivecraftForge instance;
